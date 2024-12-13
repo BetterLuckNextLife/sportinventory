@@ -1,0 +1,4 @@
+asgiref
+Django
+python-decouple
+sqlparse
