@@ -1,11 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="ru">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css_ed/custom.css" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css_ed/custom.css' %}" rel="stylesheet">
         <title>Регистрация</title>
     </head>
 
@@ -56,4 +57,6 @@
             </div>
         </form>
     </body>
+    
+    <script type="text/javascript" src="{% static 'js/scripts/dummytext' %}"></script>
 </html>
