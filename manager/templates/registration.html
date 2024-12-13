@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css_ed/custom.css" rel="stylesheet">
+        <title>Регистрация</title>
+    </head>
+
+    <body>
+        <!-- Панель навигации -->
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand fs-4 mx-1">Регистрация</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-0">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 me-1" aria-current="page" href="index.html">Главная</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Форма для регистрации -->
+        <div class="m-3">
+            <p class="text-body">
+                Чтобы зарегистрироваться, заполните форму:
+            </p>
+        </div>
+        <form class="m-3">
+            <div class="row col-9">
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Фамилия" id="inputSurname">
+                </div>
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Имя" id="inputName">
+                </div>
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Отчество (при наличии)" id="inputPatronymic">
+                </div>
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Логин" id="inputLogin">
+                </div>
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Пароль" id="inputPassword">
+                </div>
+                <div class="col-4 g-3">
+                    <input type="text" class="form-control" placeholder="Пароль (ещё раз)" id="inputPassword">
+                </div>
+                <div class="col-2 g-3">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

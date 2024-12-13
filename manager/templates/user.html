@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <title>Главная</title>
+    </head>
+
+    <body>
+        <!-- Панель навигации -->
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand fs-4 mx-1">Вид от имени пользователя</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-0">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 me-1" href="index.html">Выйти</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Инвентарная таблица -->
+        <div class="mx-3 mt-3">Ваш инвентарь</div>
+
+        <div class="row mx-3">
+            <div class="col-8">
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Предмет</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Состояние</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Клюшка</th>
+                            <td>1</td>
+                            <td>Сломано</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Клюшка</th>
+                            <td>2</td>
+                            <td>Занято</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Шайба</th>
+                            <td>15</td>
+                            <td>Свободно</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Добавление предметов инвентаря -->
+            <div class="col-4">
+                <div class="my-3 text-secondary">Чтобы добавить предмет, заполните форму.</div>
+                <form class="col">
+                    <!-- Предмет -->
+                    <div class="col-12 mb-2">
+                        <label for="inputItem" class="form-label mb-1">Предмет</label>
+                        <input type="text" class="form-control" id="inputItem">
+                    </div>
+                    <!-- Количество -->
+                    <div class="col-12 mb-2">
+                        <label for="inputCount" class="form-label mb-1">Количество</label>
+                        <input type="number" class="form-control" id="inputCount">
+                    </div>
+                    <!-- Состояние -->
+                    <div class="col-12 mb-2">
+                        <label for="selectState" class="form-label mb-1">Состояние</label>
+                        <select class="form-select" aria-label="Default select example" id="selectState">
+                            <option selected disabled>Выберите состояние</option>
+                            <option value="1">Новое</option>
+                            <option value="2">Сломано</option>
+                            <option value="3">Занято</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-1" id="buttonSubmit">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="js/scripts/admin.js"></script>
+</html>
