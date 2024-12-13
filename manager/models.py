@@ -14,7 +14,7 @@ class User(models.Model):
     def __str__(self):
         return f"{self.username} ({self.name} {self.surname})"
 
-# класс для работы с вещами(спортивного инвентаря)
+# класс для работы с вещами (спортивного инвентаря)
 
 class Product(models.Model):
     STATE_CHOICES = [
