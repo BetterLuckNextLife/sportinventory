@@ -1,62 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-
 <html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css_ed/custom.css' %}" rel="stylesheet">
-        <title>Регистрация</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-    <body>
-        <!-- Панель навигации -->
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand fs-4 mx-1">Регистрация</a>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-sm p-4" style="width: 400px;">
+        <h3 class="text-center mb-4">Регистрация</h3>
+        <form method="post" action="#">
+            {% csrf_token %}
+            <!-- Имя пользователя -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input type="text" class="form-control" id="username" placeholder="Введите имя пользователя" required>
             </div>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-0">
-                    <li class="nav-item">
-                        <a class="nav-link fs-4 me-1" aria-current="page" href="index.html">Главная</a>
-                    </li>
-                </ul>
+            <!-- Имя -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="name" placeholder="Введите имя" required>
             </div>
-        </nav>
-        
-        <!-- Форма для регистрации -->
-        <div class="m-3">
-            <p class="text-body">
-                Чтобы зарегистрироваться, заполните форму:
-            </p>
-        </div>
-        <form class="m-3">
-            <div class="row col-9">
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Фамилия" id="inputSurname">
-                </div>
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Имя" id="inputName">
-                </div>
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Отчество (при наличии)" id="inputPatronymic">
-                </div>
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Логин" id="inputLogin">
-                </div>
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Пароль" id="inputPassword">
-                </div>
-                <div class="col-4 g-3">
-                    <input type="text" class="form-control" placeholder="Пароль (ещё раз)" id="inputPassword">
-                </div>
-                <div class="col-2 g-3">
-                    <button type="submit" class="btn btn-primary">Отправить</button>
-                </div>
+            <!-- Фамилия -->
+            <div class="mb-3">
+                <label for="surname" class="form-label">Фамилия</label>
+                <input type="text" class="form-control" id="surname" placeholder="Введите фамилию" required>
             </div>
+            <!-- Отчество (опционально) -->
+            <div class="mb-3">
+                <label for="patronymic" class="form-label">Отчество (при наличии)</label>
+                <input type="text" class="form-control" id="patronymic" placeholder="Введите отчество">
+            </div>
+            <!-- Пароль -->
+            <div class="mb-3">
+                <label for="password1" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password1" placeholder="Введите пароль" required>
+            </div>
+            <!-- Подтверждение пароля -->
+            <div class="mb-3">
+                <label for="password2" class="form-label">Подтвердите пароль</label>
+                <input type="password" class="form-control" id="password2" placeholder="Подтвердите пароль" required>
+            </div>
+            <!-- Кнопка отправки -->
+            <button type="button" class="btn btn-primary w-100">Зарегистрироваться</button>
         </form>
-    </body>
-    
-    <script type="text/javascript" src="{% static 'js/scripts/dummytext' %}"></script>
+        <div class="text-center mt-3">
+            <small>Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></small>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
 </html>
