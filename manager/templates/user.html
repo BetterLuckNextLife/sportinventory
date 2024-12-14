@@ -13,7 +13,7 @@
         <!-- Панель навигации -->
         <nav class="navbar navbar-expand navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand fs-4 mx-1">Вид от имени пользователя</a>
+                <a class="navbar-brand fs-4 mx-1">Управление инвентарём</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-0">
@@ -37,22 +37,14 @@
                             <th scope="col">Состояние</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> <!--TODO отображать только то, что у пользователя, а не всё--> >
+                        {% for product in products %}
                         <tr>
-                            <th scope="row">Клюшка</th>
+                            <th scope="row">{{product.name}}</th>
                             <td>1</td>
-                            <td>Сломано</td>
+                            <td>{{ product.get_state_display }}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">Клюшка</th>
-                            <td>2</td>
-                            <td>Занято</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Шайба</th>
-                            <td>15</td>
-                            <td>Свободно</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
