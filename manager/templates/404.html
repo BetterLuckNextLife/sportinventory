@@ -1,58 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="ru">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <link href="css_ed/custom.css" rel="stylesheet">
-        <title>Главная</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css_ed/custom.css' %}" rel="stylesheet">
+        <title>Страница не найдена</title>
     </head>
 
     <body>
         <!-- Панель навигации -->
         <nav class="navbar navbar-expand navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand fs-4 mx-1">Приложение для управления спортивным инвентарём</a>
+                <a class="navbar-brand fs-4 mx-1" href="/">Приложение для управления спортивным инвентарём</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-0">
                     <li class="nav-item">
-                        <a class="nav-link active fs-4" aria-current="page" href="index.html">Вход</a>
+                        <a class="nav-link active fs-4" aria-current="page" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4 me-1" href="help.html">Справка</a>
+                        <a class="nav-link fs-4 me-1" href="/help/">Справка</a>
                     </li>
                 </ul>
             </div>
         </nav>
         
-        <!-- Форма для входа -->
-        <div class="m-3">
-            <p class="text-body">
-                Чтобы войти, заполните форму:
-            </p>
-        </div>
-        <form class="col m-3">
-            <div class="col-4 mb-2">
-                <input type="text" class="form-control" placeholder="Логин" id="inputLogin">
-            </div>
-            <div class="col-4 mb-4">
-                <input type="password" class="form-control" placeholder="Пароль" id="inputPassword">
-            </div>
-            <button type="submit" class="btn btn-primary" id="buttonSubmit">Войти</button>
-        </form>
-        
-        <div class="m-3">
-            <p class="text-secondary">Не зарегистрированы? Тогда вам сюда: <a class="link" href="registration.html">зарегистрироваться</a>.</p>
-        </div>
-        <div class="m-3">
-            <p class="m-0 text-info">Пользователь</p>
-            <p class="m-0">Логин: user, пароль: user</p>
-            <p class="m-0 mt-3 text-info">Администратор</p>
-            <p class="m-0">Логин: admin, пароль: admin</p>
+        <!-- Контент страницы 404 -->
+        <div class="container text-center mt-5">
+            <h1 class="display-1 text-danger">404</h1>
+            <p class="fs-4 text-secondary">Упс! Мы не можем найти страницу, которую вы ищете.</p>
+            <p class="text-muted">Проверьте адрес или вернитесь на <a href="/" class="link-primary">главную страницу</a>.</p>
         </div>
 
-        <script type="text/javascript" src="js/scripts/index.js"></script>
+        <script type="text/javascript" src="{% static 'js/scripts/dummytext' %}"></script>
     </body>
 </html>
