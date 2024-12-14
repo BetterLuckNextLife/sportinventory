@@ -10,6 +10,6 @@ def help(request):
 def register(request):
     return render(request, 'register.html', {})
 
-def user(request):
+def inventory(request):
     products = Product.objects.all()
-    return render(request, 'user.html', {'products': products})
+    return render(request, 'inventory.html', {'products': products})
