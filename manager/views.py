@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Product
 
 def home(request):
     return render(request, 'index.html', {})
@@ -10,5 +11,5 @@ def register(request):
     return render(request, 'register.html', {})
 
 def user(request):
-    return render(request, 'user.html', {})
-
+    products = Product.objects.all()
+    return render(request, 'user.html', {'products': products})
