@@ -1,83 +1,102 @@
 {% load static %}
 <!DOCTYPE html>
-
 <html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <title>Главная</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление инвентарём</title>
+    <!-- Подключение Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-    <body>
-        <!-- Панель навигации -->
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand fs-4 mx-1">Управление инвентарём</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-0">
-                    <li class="nav-item">
-                        <a class="nav-link fs-4 me-1" href="index.html">Выйти</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+<!-- Шапка -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Спортивный инвентарь</a>
+    </div>
+</nav>
 
-        <!-- Инвентарная таблица -->
-        <div class="mx-3 mt-3">Ваш инвентарь</div>
-
-        <div class="row mx-3">
-            <div class="col-8">
-                <table class="table table-striped ">
-                    <thead>
-                        <tr>
-                            <th scope="col">Предмет</th>
-                            <th scope="col">Количество</th>
-                            <th scope="col">Состояние</th>
-                        </tr>
-                    </thead>
-                    <tbody> <!--TODO отображать только то, что у пользователя, а не всё--> >
-                        {% for product in products %}
-                        <tr>
-                            <th scope="row">{{product.name}}</th>
-                            <td>1</td>
-                            <td>{{ product.get_state_display }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Добавление предметов инвентаря -->
-            <div class="col-4">
-                <div class="my-3 text-secondary">Чтобы добавить предмет, заполните форму.</div>
-                <form class="col">
-                    <!-- Предмет -->
-                    <div class="col-12 mb-2">
-                        <label for="inputItem" class="form-label mb-1">Предмет</label>
-                        <input type="text" class="form-control" id="inputItem">
-                    </div>
-                    <!-- Количество -->
-                    <div class="col-12 mb-2">
-                        <label for="inputCount" class="form-label mb-1">Количество</label>
-                        <input type="number" class="form-control" id="inputCount">
-                    </div>
-                    <!-- Состояние -->
-                    <div class="col-12 mb-2">
-                        <label for="selectState" class="form-label mb-1">Состояние</label>
-                        <select class="form-select" aria-label="Default select example" id="selectState">
-                            <option selected disabled>Выберите состояние</option>
-                            <option value="1">Новое</option>
-                            <option value="2">Сломано</option>
-                            <option value="3">Занято</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-1" id="buttonSubmit">Добавить</button>
-                </form>
+<!-- Основной контейнер -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Секция с таблицей -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Ваш инвентарь</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Предмет</th>
+                                <th scope="col">Количество</th>
+                                <th scope="col">Состояние</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Мяч баскетбольный</td>
+                                <td>1</td>
+                                <td><span class="badge bg-success">В запасе</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Мяч футбольный</td>
+                                <td>1</td>
+                                <td><span class="badge bg-success">В запасе</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Шайба хоккейная</td>
+                                <td>1</td>
+                                <td><span class="badge bg-warning text-dark">Используется</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </body>
 
-    <script type="text/javascript" src="{% static 'js/scripts/dummytext' %}"></script>
+        <!-- Форма добавления инвентаря -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Добавить предмет</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <!-- Поле предмет -->
+                        <div class="mb-3">
+                            <label for="itemName" class="form-label">Предмет</label>
+                            <input type="text" class="form-control" id="itemName" placeholder="Введите предмет" required>
+                        </div>
+                        <!-- Поле количество -->
+                        <div class="mb-3">
+                            <label for="itemQuantity" class="form-label">Количество</label>
+                            <input type="number" class="form-control" id="itemQuantity" placeholder="Введите количество" required>
+                        </div>
+                        <!-- Поле состояние -->
+                        <div class="mb-3">
+                            <label for="itemStatus" class="form-label">Состояние</label>
+                            <select class="form-select" id="itemStatus" required>
+                                <option selected disabled>Выберите состояние</option>
+                                <option value="В запасе">В запасе</option>
+                                <option value="Используется">Используется</option>
+                            </select>
+                        </div>
+                        <!-- Кнопка добавить -->
+                        <button type="submit" class="btn btn-primary w-100">Добавить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
 </html>

@@ -1,40 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
-
 <html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css_ed/custom.css' %}" rel="stylesheet">
-        <title>Страница не найдена</title>
-    </head>
-
-    <body>
-        <!-- Панель навигации -->
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand fs-4 mx-1" href="/">Приложение для управления спортивным инвентарём</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-0">
-                    <li class="nav-item">
-                        <a class="nav-link active fs-4" aria-current="page" href="/">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-4 me-1" href="/help/">Справка</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        
-        <!-- Контент страницы 404 -->
-        <div class="container text-center mt-5">
-            <h1 class="display-1 text-danger">404</h1>
-            <p class="fs-4 text-secondary">Упс! Мы не можем найти страницу, которую вы ищете.</p>
-            <p class="text-muted">Проверьте адрес или вернитесь на <a href="/" class="link-primary">главную страницу</a>.</p>
-        </div>
-
-        <script type="text/javascript" src="{% static 'js/scripts/dummytext' %}"></script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        p {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>404</h1>
+        <p>Ой! Страница не найдена.</p>
+        <p>Кажется, вы заблудились. Вернитесь на <a href="{% url 'inventory' %}" class="text-decoration-none">главную страницу</a>.</p>
+        <a href="{% url 'inventory' %}" class="btn btn-primary mt-3">На главную</a>
+    </div>
+</body>
 </html>

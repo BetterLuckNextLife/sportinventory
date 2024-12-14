@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .models import Product
 
+def error_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
 def login(request):
     return render(request, 'login.html', {})
 
