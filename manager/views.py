@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .models import Product
+from django.contrib.auth.decorators import login_required
 
 
 def error_404_view(request, exception):
@@ -24,6 +25,7 @@ def register(request):
     
     return render(request, 'register.html', {'form': form})
 
+@login_required
 def inventory(request):
     products = Product.objects.all()
     return render(request, 'inventory.html', {'products': products})
