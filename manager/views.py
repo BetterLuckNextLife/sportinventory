@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .models import Product
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 def error_404_view(request, exception):
@@ -24,34 +25,34 @@ def register(request):
         form = UserRegistrationForm()
     
     return render(request, 'register.html', {'form': form})
-
 @login_required
 def inventory(request):
     if request.method == "POST":
         name = request.POST.get('name')
-        quantity = int(request.POST.get('quantity', 1))
-        state = request.POST.get('state', 'inactive')
+        quantity = request.POST.get('quantity')
+        state = request.POST.get('state')
 
-        # Проверяем, есть ли такой же продукт с таким же состоянием
-        existing_product = Product.objects.filter(
-            name=name, state=state, owner=request.user
-        ).first()
+        # Проверка количества
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                raise ValueError("Количество должно быть положительным числом.")
+        except (ValueError, TypeError):
+            messages.error(request, "Некорректное количество! Введите положительное число.")
+            return redirect('inventory')
+
+        # Проверяем существующий продукт
+        existing_product = Product.objects.filter(name=name, state=state, owner=request.user).first()
 
         if existing_product:
-            # Если продукт уже существует, увеличиваем количество
             existing_product.quantity += quantity
             existing_product.save()
         else:
-            # Иначе создаём новый продукт
-            Product.objects.create(
-                name=name,
-                quantity=quantity,
-                state=state,
-                owner=request.user
-            )
+            Product.objects.create(name=name, quantity=quantity, state=state, owner=request.user)
 
+        messages.success(request, "Элемент успешно добавлен в инвентарь.")
         return redirect('inventory')
 
-    # Получаем все продукты текущего пользователя
+    # Получаем продукты пользователя
     products = Product.objects.filter(owner=request.user)
     return render(request, 'inventory.html', {'products': products})
