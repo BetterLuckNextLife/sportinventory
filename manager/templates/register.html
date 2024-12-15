@@ -20,34 +20,41 @@
         <div class="mt-4 container d-flex justify-content-center align-items-center">
             <div class="card shadow-sm p-4" style="width: 400px;">
                 <h3 class="text-center mb-4">Регистрация</h3>
-                <form method="post" action="#">
+                <form method="post">
                     {% csrf_token %}
-                    <!-- Фамилия -->
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="surname" placeholder="Фамилия" required>
-                    </div>
-                    <!-- Имя -->
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="name" placeholder="Имя" required>
-                    </div>
-                    <!-- Отчество (опционально) -->
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="patronymic" placeholder="Отчество (при наличии)">
-                    </div>
+                    
                     <!-- Логин -->
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="login" placeholder="Логин" required>
+                        {{ form.username }}
+                        <div class="form-text">{{ form.username.help_text }}</div>
                     </div>
+
+                    <!-- Имя -->
+                    <div class="mb-3">
+                        {{ form.first_name }}
+                        <div class="form-text">{{ form.first_name.help_text }}</div>
+                    </div>
+
+                    <!-- Фамилия -->
+                    <div class="mb-3">
+                        {{ form.last_name }}
+                        <div class="form-text">{{ form.last_name.help_text }}</div> 
+                    </div>
+
                     <!-- Пароль -->
                     <div class="mb-3">
-                        <input type="password" class="form-control" id="password1" placeholder="Пароль" required>
+                        {{ form.password1 }}
+                        <div class="form-text">{{ form.password1.help_text }}</div>
                     </div>
+
                     <!-- Подтверждение пароля -->
                     <div class="mb-3">
-                        <input type="password" class="form-control" id="password2" placeholder="Подтвердите пароль" required>
+                        {{ form.password2 }}
+                        <div class="form-text">{{ form.password2.help_text }}</div> 
                     </div>
+
                     <!-- Кнопка отправки -->
-                    <button type="button" class="btn btn-primary w-100">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
                 </form>
                 <div class="text-center mt-3">
                     <small>Уже зарегистрированы? <a href="{% url 'login' %}">Вход</a></small>

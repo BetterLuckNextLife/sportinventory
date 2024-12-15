@@ -2,20 +2,17 @@ from django.db import models
 
 # класс для работы с пользователями (учителями)
 
-class User(models.Model):
-    id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=32, unique=True)
-    name = models.CharField(max_length=64)
-    surname = models.CharField(max_length=64)
+from django.contrib.auth.models import AbstractUser
+
+# Кастомная модель User
+class User(AbstractUser):
+    # Остальные поля уже есть в AbstractUser
     patronymic = models.CharField(max_length=64, blank=True, null=True)
-    password_hash = models.CharField(max_length=128)
-    verified = models.BooleanField()
-
+    verified = models.BooleanField(default=False)
     def __str__(self):
-        return f"{self.username} ({self.name} {self.surname})"
+        return f"{self.username} ({self.first_name} {self.last_name})"
 
-# класс для работы с вещами (спортивного инвентаря)
-
+# Класс для спортивного инвентаря
 class Product(models.Model):
     STATE_CHOICES = [
         ('active', 'Используется'),
