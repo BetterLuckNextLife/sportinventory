@@ -71,24 +71,24 @@
                         </div>
                         <div class="card-body">
                             <form method="post">
-                                <!-- Поле предмет -->
+                                <!-- Поле [Предмет] -->
                                 <div class="mb-3">
                                     <input type="text" class="form-control" id="itemName" placeholder="Предмет" required>
                                 </div>
-                                <!-- Поле количество -->
+                                <!-- Поле [Количество] -->
                                 <div class="mb-3">
                                     <input type="number" class="form-control" id="itemQuantity" placeholder="Количество" required>
                                 </div>
-                                <!-- Поле состояние -->
+                                <!-- Поле [Состояние] -->
                                 <div class="mb-3">
                                     <select class="form-select" id="itemStatus" required>
                                         <option selected disabled>Cостояние</option>
-                                        <option value="В запасе">В запасе</option>
-                                        <option value="Используется">Используется</option>
-                                        <option value="Сломан">Сломан</option>
+                                        <option class="text-success" value="В запасе">В запасе</option>
+                                        <option class="text-primary" value="Используется">Используется</option>
+                                        <option class="text-danger" value="Сломан">Сломан</option>
                                     </select>
                                 </div>
-                                <!-- Кнопка добавить -->
+                                <!-- Кнопка [Добавить] -->
                                 <button type="submit" class="btn btn-primary w-100">Добавить</button>
                             </form>
                         </div>
