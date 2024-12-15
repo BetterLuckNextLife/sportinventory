@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 
 <html lang="ru">
@@ -16,6 +15,7 @@
         <nav class="navbar navbar-expand-lg shadow p-1">
             <div class="container-fluid">
                 <a class="navbar-brand fs-4" href="#">Спортивный инвентарь</a>
+                <span class="text-muted">Пользователь: {{ user.username }}</span>
             </div>
         </nav>
 
@@ -39,24 +39,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for product in products %}
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>Мяч баскетбольный</td>
-                                        <td>1</td>
-                                        <td><span class="text-success">В запасе</span></td>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.quantity|default:"1" }}</td>
+                                        <td>
+                                            {% if product.state == 'active' %}
+                                                <span class="text-primary">Используется</span>
+                                            {% elif product.state == 'inactive' %}
+                                                <span class="text-success">В запасе</span>
+                                            {% elif product.state == 'broken' %}
+                                                <span class="text-danger">Сломан</span>
+                                            {% endif %}
+                                        </td>
                                     </tr>
+                                    {% empty %}
                                     <tr>
-                                        <th scope="row">2</th>
-                                        <td>Мяч футбольный</td>
-                                        <td>1</td>
-                                        <td><span class="text-success">В запасе</span></td>
+                                        <td colspan="4" class="text-center">У вас пока нет инвентаря.</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Шайба хоккейная</td>
-                                        <td>5</td>
-                                        <td><span class="text-primary">Используется</span></td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -70,22 +72,23 @@
                             <h5 class="mb-0">Добавить предмет</h5>
                         </div>
                         <div class="card-body">
-                            <form method="post">
+                            <form method="post" action="{% url 'inventory' %}">
+                                {% csrf_token %}
                                 <!-- Поле [Предмет] -->
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" id="itemName" placeholder="Предмет" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Предмет" required>
                                 </div>
                                 <!-- Поле [Количество] -->
                                 <div class="mb-3">
-                                    <input type="number" class="form-control" id="itemQuantity" placeholder="Количество" required>
+                                    <input type="number" class="form-control" name="quantity" placeholder="Количество" required>
                                 </div>
                                 <!-- Поле [Состояние] -->
                                 <div class="mb-3">
-                                    <select class="form-select" id="itemStatus" required>
-                                        <option selected disabled>Cостояние</option>
-                                        <option class="text-success" value="В запасе">В запасе</option>
-                                        <option class="text-primary" value="Используется">Используется</option>
-                                        <option class="text-danger" value="Сломан">Сломан</option>
+                                    <select class="form-select" name="state" required>
+                                        <option selected disabled>Состояние</option>
+                                        <option value="inactive">В запасе</option>
+                                        <option value="active">Используется</option>
+                                        <option value="broken">Сломан</option>
                                     </select>
                                 </div>
                                 <!-- Кнопка [Добавить] -->

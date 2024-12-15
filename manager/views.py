@@ -27,5 +27,31 @@ def register(request):
 
 @login_required
 def inventory(request):
-    products = Product.objects.all()
+    if request.method == "POST":
+        name = request.POST.get('name')
+        quantity = int(request.POST.get('quantity', 1))
+        state = request.POST.get('state', 'inactive')
+
+        # Проверяем, есть ли такой же продукт с таким же состоянием
+        existing_product = Product.objects.filter(
+            name=name, state=state, owner=request.user
+        ).first()
+
+        if existing_product:
+            # Если продукт уже существует, увеличиваем количество
+            existing_product.quantity += quantity
+            existing_product.save()
+        else:
+            # Иначе создаём новый продукт
+            Product.objects.create(
+                name=name,
+                quantity=quantity,
+                state=state,
+                owner=request.user
+            )
+
+        return redirect('inventory')
+
+    # Получаем все продукты текущего пользователя
+    products = Product.objects.filter(owner=request.user)
     return render(request, 'inventory.html', {'products': products})

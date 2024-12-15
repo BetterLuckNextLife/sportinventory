@@ -19,10 +19,11 @@ class Product(models.Model):
         ('inactive', 'В запасе'),
         ('broken', 'Сломан'),
     ]
-    id = models.AutoField(primary_key=True)
+
     name = models.CharField(max_length=256)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='products', blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=1)
     state = models.CharField(max_length=20, choices=STATE_CHOICES, default='inactive')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
 
     def __str__(self):
-        return f"{self.name} ({self.get_state_display()})"
+        return f"{self.name} x{self.quantity} ({self.get_state_display()})"
