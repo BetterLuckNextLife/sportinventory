@@ -23,7 +23,7 @@
                             style="width: 40px; height: 40px;"
                             role="button"
                             data-bs-toggle="dropdown"
-                            aria-expanded="false">UU
+                            aria-expanded="false">{{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="profile">{{ user.first_name }} {{ user.last_name }} (вы)</a></li>
@@ -66,7 +66,7 @@
                                             {% elif product.state == 'inactive' %}
                                                 <span class="text-success">В запасе</span>
                                             {% elif product.state == 'broken' %}
-                                                <span class="text-danger">Сломан</span>
+                                                <span class="text-danger">Сломано</span>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -97,18 +97,18 @@
                                 <!-- Поле [Количество] -->
                                 <div class="mb-3">
                                     <input type="number" class="form-control" id="quantityInput" name="quantity" placeholder="Количество" required>
-                                    <!-- Сообщение об ошибке -->
-                                    <div id="quantityError" class="text-danger mt-1" style="display: none;">
-                                        Количество должно быть больше нуля!
-                                    </div>
+                                    <!-- Ошибка [число не натуральное]-->
+                                    <small id="quantityError" class="text-danger mt-1" style="display: none;">
+                                        Количество должно быть натуральным числом!
+                                    </small>
                                 </div>
                                 <!-- Поле [Состояние] -->
                                 <div class="mb-3">
-                                    <select class="form-select" name="state" required>
-                                        <option selected disabled>Состояние</option>
-                                        <option value="inactive">В запасе</option>
-                                        <option value="active">Используется</option>
-                                        <option value="broken">Сломан</option>
+                                    <select id="stateSelect" class="form-select" name="state" required>
+                                        <option selected disabled value="notStated" class="text-secondary">Состояние...</option>
+                                        <option value="inactive" class="text-success">В запасе</option>
+                                        <option value="active" class="text-primary">Используется</option>
+                                        <option value="broken" class="text-danger">Сломано</option>
                                     </select>
                                 </div>
                                 <!-- Кнопка [Добавить] -->
@@ -120,39 +120,34 @@
             </div>
         </div>
 
-        <!-- Скрипт для динамической проверки количества -->
+        <!-- Скрипт для динамической проверки полей -->
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-            const quantityInput = document.getElementById("quantityInput");
-            const quantityError = document.getElementById("quantityError");
-            const addButton = document.getElementById("addButton");
+                const quantityInput = document.getElementById("quantityInput");
+                const quantityError = document.getElementById("quantityError");
+                const stateSelect = document.getElementById("stateSelect");
+                const addButton = document.getElementById("addButton");
 
-            quantityInput.addEventListener("input", () => {
-                const quantity = quantityInput.value.trim(); // Убираем пробелы
+                // Проверка количества
+                quantityInput.addEventListener("input", () => {
+                    const quantity = quantityInput.value.trim(); // Убираем пробелы
+                    const value = parseFloat(quantity, 10);
 
-                // Если поле пустое, скрываем сообщение и подсветку
-                if (quantity === "") {
-                    quantityError.style.display = "none";
-                    quantityInput.classList.remove("is-invalid");
-                    addButton.disabled = true;
-                    return;
-                }
+                    // Если значение не число или <= 0, показываем ошибку и подсвечиваем
+                    if (value != "" && (isNaN(value) || value <= 0 || value % 1 != 0)) {
+                        quantityError.style.display = "block";
+                        quantityInput.classList.add("is-invalid");
+                        addButton.disabled = true;
+                    } else {
+                        // Если всё корректно, скрываем сообщение и убираем подсветку
+                        quantityError.style.display = "none";
+                        quantityInput.classList.remove("is-invalid");
+                        addButton.disabled = false;
+                    }
+                });
 
-                const quantityValue = parseInt(quantity, 10);
-
-                // Если значение не число или <= 0, показываем ошибку и подсвечиваем
-                if (isNaN(quantityValue) || quantityValue <= 0) {
-                    quantityError.style.display = "block";
-                    quantityInput.classList.add("is-invalid");
-                    addButton.disabled = true;
-                } else {
-                    // Если корректно, скрываем сообщение и убираем подсветку
-                    quantityError.style.display = "none";
-                    quantityInput.classList.remove("is-invalid");
-                    addButton.disabled = false;
-                }
+                // Проверка состояния
             });
-         });
         </script>
         <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     </body>

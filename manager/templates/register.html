@@ -35,30 +35,45 @@
                     <!-- Фамилия -->
                     <div class="mb-3">
                         <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Фамилия" required>
+                        <small class="error text-danger mt-1" style="display: none;">
+                            Фамилия должна содержать только русские буквы!
+                        </small>
                     </div>
                     
                     <!-- Имя -->
                     <div class="mb-3">
                         <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Имя" required>
+                        <small class="error text-danger mt-1" style="display: none;">
+                            Имя должно содержать только русские буквы!
+                        </small>
                     </div>
                     
                     <!-- Логин -->
                     <div class="mb-3">
                         <input type="text" class="form-control" id="username" name="username" placeholder="Логин" required>
+                        <small class="error text-danger mt-1" style="display: none;">
+                            Логин может содержать только латинские буквы и цифры!
+                        </small>
                     </div>
 
                     <!-- Пароль -->
                     <div class="mb-1">
-                        <input type="text" class="form-control" id="password1" name="password1" placeholder="Пароль" required>
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Пароль" required>
+                        <small class="error text-danger mt-1" style="display: none;">
+                            ...
+                        </small>
                     </div>
 
                     <!-- Подтверждение пароля -->
                     <div class="my-3">
-                        <input type="text" class="form-control" id="password2" name="password2" placeholder="Подтвердите пароль" required>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Подтвердите пароль" required>
+                        <small class="error text-danger mt-1" style="display: none;">
+                           Пароли не совпадают!
+                        </small>
                     </div>
 
                     <!-- Кнопка отправки -->
-                    <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                    <button id="submitButton" type="submit" class="btn btn-primary w-100" disabled>Зарегистрироваться</button>
                 </form>
                 <div class="text-center mt-3">
                     <small>Уже зарегистрированы? <a href="{% url 'login' %}">Войти</a></small>
@@ -79,6 +94,102 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const inputs = document.querySelectorAll(".form-control");
+                const submitButton = document.getElementById("submitButton");
+                const textErrors = document.querySelectorAll(".error");
+                // Список всех соответствий
+                const logs = [false, false, false, true, false];
+                
+                // Проверка всех true в массиве
+                function all(bools) {
+                    flag = true;
+
+                    for (let i = 0; i < bools.length; i++) {
+                        if (!bools[i]) {
+                            flag = false;
+                            return flag;
+                        } 
+                    }
+
+                    return flag;
+                }
+
+                // Проверка фамилии
+                inputs[0].addEventListener("input", () => {                    
+                    let value = inputs[0].value;
+
+                    if (value != "" && !value.match("^[а-яА-Я]+$")) {
+                        textErrors[0].style.display = "block";
+                        inputs[0].classList.add("is-invalid");
+                        logs[0] = false;
+                    } else {
+                        textErrors[0].style.display = "none";
+                        inputs[0].classList.remove("is-invalid");
+                        submitButton.disabled = false;
+                        logs[0] = true;
+                    }
+
+                    submitButton.disabled = !all(logs);
+                });
+
+                // Проверка имени
+                inputs[1].addEventListener("input", () => {                    
+                    const value = inputs[1].value;
+
+                    if (value != "" && !value.match("^[а-яА-Я]+$")) {
+                        textErrors[1].style.display = "block";
+                        inputs[1].classList.add("is-invalid");
+                        submitButton.disabled = true;
+                        logs[1] = false;
+                    } else {
+                        textErrors[1].style.display = "none";
+                        inputs[1].classList.remove("is-invalid");
+                        submitButton.disabled = false;
+                        logs[1] = true;
+                    }
+
+                    submitButton.disabled = !all(logs);
+                });
+
+                // Проверка логина
+                inputs[2].addEventListener("input", () => {                    
+                    const value = inputs[2].value;
+
+                    if (value != "" && !value.match("^[a-zA-Z0-9]+$")) {
+                        textErrors[2].style.display = "block";
+                        inputs[2].classList.add("is-invalid");
+                        logs[2] = false;
+                    } else {
+                        textErrors[2].style.display = "none";
+                        inputs[2].classList.remove("is-invalid");
+                        logs[2] = true;
+                    }
+
+                    submitButton.disabled = !all(logs);
+                });
+
+                // Проверка совпадения паролей
+                inputs[4].addEventListener("input", () => {                    
+                    const password1 = inputs[3].value;
+                    const password2 = inputs[4].value;
+
+                    if (password2 != "" && password2 != password1) {
+                        textErrors[4].style.display = "block";
+                        inputs[4].classList.add("is-invalid");
+                        submitButton.disabled = true;
+                        logs[4] = false;
+                    } else {
+                        textErrors[4].style.display = "none";
+                        inputs[4].classList.remove("is-invalid");
+                        submitButton.disabled = false;
+                        logs[4] = true;
+                    }
+
+                    submitButton.disabled = !all(logs);
+                });
+            });
+        </script>
     </body>
 </html>
