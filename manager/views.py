@@ -12,10 +12,6 @@ def error_404_view(request, exception):
 def login(request):
     return render(request, 'login.html', {})
 
-def base(request):
-    return render(request, 'base.html', {})
-
-
 def help(request):
     return render(request, 'help.html', {})
 
@@ -29,6 +25,7 @@ def register(request):
         form = UserRegistrationForm()
     
     return render(request, 'register.html', {'form': form})
+
 @login_required
 def inventory(request):
     if request.method == "POST":
