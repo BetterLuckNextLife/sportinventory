@@ -12,6 +12,10 @@ def error_404_view(request, exception):
 def login(request):
     return render(request, 'login.html', {})
 
+def base(request):
+    return render(request, 'base.html', {})
+
+
 def help(request):
     return render(request, 'help.html', {})
 
