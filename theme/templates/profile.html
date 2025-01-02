@@ -1,0 +1,73 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% tailwind_css %}
+        <title>Управление инвентарём</title>
+    </head>
+
+    <body class="bg-gray-100">
+        <!-- Шапка -->
+        <nav class="bg-white shadow-lg">
+            <div class="mx-auto max-w-10x1">
+                <div class="flex items-center justify-between">
+                    <!-- Заголовок -->
+                    <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
+                    <!-- Вкладки -->
+                    <div class="h-16 flex items-center justify-between">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                            <a href="{% url 'inventory' %}">Инвентарь</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                            <a href="{% url 'help' %}">Справка</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-emerald-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                                {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                            </a>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Основной контейнер -->
+        <div class="container mx-auto mt-10 p-4 flex justify-center">
+            <!-- Карточка с данными -->
+            <div class="card shadow-lg bg-white rounded-lg w-full sm:w-96">
+                <!-- Заголовок -->
+                <div class="card-header bg-emerald-50 p-4">
+                    <h5 class="text-xl font-semibold">Ваши данные</h5>
+                </div>
+                <!-- Тело -->
+                <div class="card-body p-4">
+                    <table class="table-auto w-full">
+                        <tbody>
+                            <tr>
+                                <th class="text-left p-2">ФИО</th>
+                                <td class="p-2">{{ user.last_name }} {{ user.first_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left p-2">Логин</th>
+                                <td class="p-2">{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left p-2">Пароль</th>
+                                <td class="p-2">
+                                    <a class="text-emerald-600 hover:text-emerald-700 transition" href="#" title="Сменить пароль">
+                                        Сменить пароль
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
