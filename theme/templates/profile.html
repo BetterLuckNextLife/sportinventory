@@ -17,14 +17,14 @@
                     <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
                     <!-- Вкладки -->
                     <div class="h-16 flex items-center justify-between">
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
                             <a href="{% url 'inventory' %}">Инвентарь</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
                             <a href="{% url 'help' %}">Справка</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
-                            <a class="text-center text-white flex justify-center items-center rounded-full bg-emerald-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-indigo-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
                                 {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
                             </a>
                         </div>                        
@@ -33,38 +33,28 @@
             </div>
         </nav>
 
-
-        <!-- Основной контейнер -->
-        <div class="container mx-auto mt-10 p-4 flex justify-center">
-            <!-- Карточка с данными -->
-            <div class="card shadow-lg bg-white rounded-lg w-full sm:w-96">
-                <!-- Заголовок -->
-                <div class="card-header bg-emerald-50 p-4">
-                    <h5 class="text-xl font-semibold">Ваши данные</h5>
-                </div>
-                <!-- Тело -->
-                <div class="card-body p-4">
-                    <table class="table-auto w-full">
-                        <tbody>
-                            <tr>
-                                <th class="text-left p-2">ФИО</th>
-                                <td class="p-2">{{ user.last_name }} {{ user.first_name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left p-2">Логин</th>
-                                <td class="p-2">{{ user.username }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left p-2">Пароль</th>
-                                <td class="p-2">
-                                    <a class="text-emerald-600 hover:text-emerald-700 transition" href="#" title="Сменить пароль">
-                                        Сменить пароль
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Карточка входа -->
+        <div class="w-1/3 mx-auto mt-10 p-4 bg-white border rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-center text-indigo-600">Войти</h2>
+            <div class="pt-4">
+                <table class="table border border-gray-300 border-collapse w-full">
+                    <tbody>
+                        <tr class="border-y border-gray-300">
+                            <td class="px-4 py-2 text-start break-all">Имя, фамилия</td>
+                            <td class="px-4 py-2 text-start">{{ user.first_name }} {{ user.last_name }}</td>
+                        </tr>
+                        <tr class="border-y border-gray-300">
+                            <td class="px-4 py-2 text-start break-all">Логин</td>
+                            <td class="px-4 py-2 text-start">{{ user.username }}</td>
+                        </tr>
+                        <tr class="border-y border-gray-300">
+                            <td class="px-4 py-2 text-start break-all">Пароль</td>
+                            <td class="px-4 py-2 text-start">
+                                <a class="text-red-500 hover:text-red-700 transition" href="{% url 'register' %}">Сменить пароль</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </body>

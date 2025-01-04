@@ -6,62 +6,83 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% tailwind_css %}
     </head>
-    <!-- Шапка -->
-    <nav class="bg-white shadow-lg">
-        <div class="mx-auto max-w-10x1">
-            <div class="flex items-center justify-between">
-                <!-- Заголовок -->
-                <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
-                <!-- Вкладки -->
-                <div class="h-16 flex items-center justify-between">
-                    <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
-                        <a href="{% url 'inventory' %}">Инвентарь</a>
+    <body class="bg-gray-100">
+        <!-- Шапка -->
+        <nav class="bg-white shadow-lg">
+            <div class="mx-auto max-w-10x1">
+                <div class="flex items-center justify-between">
+                    <!-- Заголовок -->
+                    <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
+                    <!-- Вкладки -->
+                    <div class="h-16 flex items-center justify-between">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                            <a href="{% url 'inventory' %}">Инвентарь</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                            <a href="{% url 'help' %}">Справка</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-indigo-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                                {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                            </a>
+                        </div>
                     </div>
-                    <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
-                        <a href="{% url 'help' %}">Справка</a>
-                    </div>
-                    <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
-                        <a class="text-center text-white flex justify-center items-center rounded-full bg-emerald-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                            {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                        </a>
-                    </div>                        
+                </div>
+            </div>
+        </nav>
+        <!-- Карточка регистрации -->
+        <div class="mx-auto mt-10 p-4 bg-white border rounded-lg shadow-lg" style="max-width: 400px;">
+            <div class="pb-4 border-b">
+                <h2 class="text-2xl font-semibold text-center text-indigo-600">Регистрация</h2>
+            </div>
+            <div class="pt-4">
+                <form method="post" class="grid gap-4">
+                    {% csrf_token %}
+                    <input 
+                        type="text" 
+                        name="first_name" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        placeholder="Имя">
+                    <input 
+                        type="text" 
+                        name="last_name" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        placeholder="Фамилия">
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        placeholder="Логин">
+                    <input 
+                        type="password" 
+                        name="password1" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        placeholder="Пароль">
+                    <input 
+                        type="password" 
+                        name="password2" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        placeholder="Подтвердите пароль">
+                    <!-- Ошибка при неправильных данных TODO настроить вывод ошибки-->
+                    {% if form.non_field_errors %}
+                        <div class="p-2 text-center text-red-700 bg-red-50 border border-red-300 rounded">
+                            <p>Введены неверные данные!</p>
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    <button 
+                        type="submit" 
+                        class="p-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 transition font-semibold">
+                        Отправить
+                    </button>
+                </form>
+                <div class="mt-5 text-center text-gray-400">
+                    <p>
+                        Уже зарегистрированы?
+                        <a class="text-indigo-500 hover:text-indigo-800 transition" href="{% url 'login' %}">Войти</a>
+                    </p>
                 </div>
             </div>
         </div>
-    </nav>
-
-        <!-- Основной контейнер с центровкой -->
-        <div class="flex justify-center mt-12">
-            <!-- Форма регистрации -->
-            <div class="card bg-white shadow-lg p-6 w-full max-w-md mx-3">
-                <h3 class="text-center text-2xl font-bold text-emerald-700 mb-4">Регистрация</h3>
-                <form method="post" class="space-y-4">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="last_name" class="sr-only">Фамилия</label>
-                        <input type="text" class="w-full p-3 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none transition" id="last_name" name="last_name" placeholder="Фамилия" required aria-label="Фамилия">
-                    </div>
-                    <div class="mb-3">
-                        <label for="first_name" class="sr-only">Имя</label>
-                        <input type="text" class="w-full p-3 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none transition" id="first_name" name="first_name" placeholder="Имя" required aria-label="Имя">
-                    </div>
-                    <div class="mb-3">
-                        <label for="username" class="sr-only">Логин</label>
-                        <input type="text" class="w-full p-3 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none transition" id="username" name="username" placeholder="Логин" required aria-label="Логин">
-                    </div>
-                    <div class="mb-1">
-                        <label for="password1" class="sr-only">Пароль</label>
-                        <input type="password" class="w-full p-3 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none transition" id="password1" name="password1" placeholder="Пароль" required aria-label="Пароль">
-                    </div>
-                    <div class="my-3">
-                        <label for="password2" class="sr-only">Подтвердите пароль</label>
-                        <input type="password" class="w-full p-3 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none transition" id="password2" name="password2" placeholder="Подтвердите пароль" required aria-label="Подтвердите пароль">
-                    </div>
-                    <button type="submit" class="w-full p-3 text-white bg-emerald-600 rounded hover:bg-emerald-700 transition font-semibold" aria-label="Зарегистрироваться">Зарегистрироваться</button>
-                </form>
-                <div class="text-center mt-3">
-                    <small>Уже зарегистрированы? <a href="{% url 'login' %}" class="text-emerald-600 hover:text-emerald-700 transition">Войти</a></small>
-                </div>
-            </div>
     </body>
 </html>

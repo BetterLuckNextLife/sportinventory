@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
+# NPM path for Windows
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Application definition
 
@@ -121,12 +124,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/theme/static/'
+STATIC_URL = 'theme/static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "/theme/static/'",
+    BASE_DIR / "theme/static/",
 ]
 
 # Default primary key field type

@@ -42,7 +42,21 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                "primary-50": "#EEF2FF",
+                "primary-100": "#E0E7FF",
+                "primary-200": "#C7D2FE",
+                "primary-300": "#A5B4FC",
+                "primary-400": "#818CF8",
+                "primary-500": "#6366F1",
+                "primary-600": "#4F46E5",
+                "primary-700": "#4338CA",
+                "primary-800": "#3730A3",
+                "primary-900": "#312E81",
+                "primary-950": "#1E1B4B"
+            }
+        },
     },
     plugins: [
         /**
@@ -50,7 +64,7 @@ module.exports = {
          * for forms. If you don't like it or have own styling for forms,
          * comment the line below to disable '@tailwindcss/forms'.
          */
-        require('@tailwindcss/forms'),
+        // require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
     ],
