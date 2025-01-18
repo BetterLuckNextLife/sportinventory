@@ -42,30 +42,35 @@
                         type="text" 
                         name="first_name" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
-                        placeholder="Имя">
+                        placeholder="Имя"
+                        required>
                     <input 
                         type="text" 
                         name="last_name" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
-                        placeholder="Фамилия">
+                        placeholder="Фамилия"
+                        required>
                     <input 
                         type="text" 
                         name="username" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
-                        placeholder="Логин">
+                        placeholder="Логин"
+                        required>
                     <input 
                         type="password" 
                         name="password1" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
-                        placeholder="Пароль">
+                        placeholder="Пароль"
+                        required>
                     <input 
                         type="password" 
                         name="password2" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
-                        placeholder="Подтвердите пароль">
+                        placeholder="Подтвердите пароль"
+                        required>
                     <!-- Ошибка при неправильных данных TODO настроить вывод ошибки-->
                     {% if form.non_field_errors %}
-                        <div class="p-2 text-center text-red-700 bg-red-50 border border-red-300 rounded">
+                        <div class="p-2 text-red-500 bg-red-50 border border-red-500 rounded">
                             <p>Введены неверные данные!</p>
                             {{ form.non_field_errors }}
                         </div>

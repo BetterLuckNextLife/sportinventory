@@ -99,7 +99,7 @@
                     <div id="quantityError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
                         Количество должно быть натуральным числом!
                     </div>
-                    <!-- <select class="form-select p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" name="state" required>
+                    <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" name="state" required>
                         <option value="inactive">В запасе</option>
                         <option value="active">Используется</option>
                         <option value="broken">Сломан</option>
@@ -126,56 +126,77 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const nameInput = document.getElementById("nameInput");
-                const nameLengthError = document.getElementById("nameLengthError");
-                const quantityInput = document.getElementById("quantityInput");
-                const quantityError = document.getElementById("quantityError");
-                const addButton = document.getElementById("addButton");
+                const nameInput = document.getElementById("nameInput")
+                const nameLengthError = document.getElementById("nameLengthError")
+                const quantityInput = document.getElementById("quantityInput")
+                const quantityError = document.getElementById("quantityError")
+                const addButton = document.getElementById("addButton")
 
-                let logs = [false, false, false];
+                let logs = [false, false, true]
 
-                console.log(logs);
+                console.log(logs)
 
                 nameInput.addEventListener("input", () => {
-                    const name = nameInput.value;
+                    const name = nameInput.value
 
                     // Ошибка длины имени
                     if (name.length > 256) {
-                        nameLengthError.classList.remove("hidden");
-                        nameInput.classList.add("focus:outline-red-500");
-                        addButton.disabled = true;
-                        logs[0] = false;
+                        nameLengthError.classList.remove("hidden")
+                        nameInput.classList.add("focus:outline-red-500")
+                        logs[0] = false
                     } else {
-                        nameLengthError.classList.add("hidden");
-                        nameInput.classList.remove("focus:outline-red-500");
-                        addButton.disabled = false;
-                        logs[1] = true;
+                        nameLengthError.classList.add("hidden")
+                        nameInput.classList.remove("focus:outline-red-500")
+                        logs[0] = true
                     }
+
+                    switchButton();
                 })
 
                 quantityInput.addEventListener("input", () => {
-                    const quantity = quantityInput.value.trim();
+                    const quantity = quantityInput.value.trim()
 
                     // Ошибка количества
                     if (quantity === "") {
-                        quantityError.classList.add("hidden");
-                        quantityInput.classList.remove("focus:outline-red-500");
-                        addButton.disabled = true;
-                        return;
+                        quantityError.classList.add("hidden")
+                        quantityInput.classList.remove("focus:outline-red-500")
+                        logs[1] = false
+
+                        return
                     }
 
-                    const quantityValue = parseFloat(quantity, 10);
+                    const quantityValue = parseFloat(quantity, 10)
 
                     if (isNaN(quantityValue) || quantityValue < 1 || quantityValue % 1 != 0.0) {
-                        quantityError.classList.remove("hidden");
-                        quantityInput.classList.add("focus:outline-red-500");
-                        addButton.disabled = true;
+                        quantityError.classList.remove("hidden")
+                        quantityInput.classList.add("focus:outline-red-500")
+                        logs[1] = false
                     } else {
-                        quantityError.classList.add("hidden");
-                        quantityInput.classList.remove("focus:outline-red-500");
-                        addButton.disabled = false;
+                        quantityError.classList.add("hidden")
+                        quantityInput.classList.remove("focus:outline-red-500")
+                        logs[1] = true
                     }
+
+                    switchButton();
                 });
+
+                function switchButton() {
+                    if (all(logs)) {
+                        addButton.disabled = false
+                    } else {
+                        addButton.disabled = true
+                    }
+                }
+
+                function all(array) {
+                    for (let i = 0; i < array.length; i++) {
+                        if (array[i] === false) {
+                            return false
+                        }
+                    }
+
+                    return true
+                }
             });
         </script>
     </body>
