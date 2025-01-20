@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 
-def error_404_view(request, exception):
+def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
 
 def login(request):
@@ -25,6 +25,11 @@ def register(request):
         form = UserRegistrationForm()
     
     return render(request, 'register.html', {'form': form})
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html', {})
+
 @login_required
 def inventory(request):
     if request.method == "POST":
