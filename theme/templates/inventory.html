@@ -8,6 +8,18 @@
         <title>Управление инвентарём</title>
     </head>
 
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        } 
+        ::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        } 
+        ::-webkit-scrollbar-thumb {
+            background-color: #d0d0d0;
+        }
+    </style>
+
     <body class="bg-gray-100">
         <!-- Шапка -->
         <nav class="bg-white shadow-lg">
@@ -16,18 +28,16 @@
                     <!-- Заголовок -->
                     <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
                     <!-- Вкладки -->
-                    <div class="h-16 flex items-center justify-between">
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a href="{% url 'inventory' %}">Инвентарь</a>
-                        </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a href="{% url 'help' %}">Справка</a>
-                        </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                                {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                            </a>
-                        </div>                        
+                    <div class="h-16 px-2 flex items-center justify-between gap-2">
+                        <a href="{% url 'inventory' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                            Инвентарь
+                        </a>
+                        <a href="{% url 'help' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                            Справка
+                        </a>
+                        <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                            {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -39,38 +49,44 @@
             <div class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
                 <h2 class="text-xl font-semibold text-center text-primary-600">Ваш инвентарь</h2>
                 <hr>
-                <table class="table border border-gray-300 border-collapse w-full">
-                    <thead>
-                        <tr class="bg-gray-50 border-y border-gray-300">
-                            <th class="px-4 py-2 text-start">#</th>
-                            <th class="px-4 py-2 text-start">Предмет</th>
-                            <th class="px-4 py-2 text-start">Количество</th>
-                            <th class="px-4 py-2 text-start">Состояние</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                        <tr class="border-y border-gray-300 hover:bg-primary-50 transition">
-                            <th class="px-4 py-2 text-start">{{ forloop.counter }}</th>
-                            <td class="px-4 py-2 text-start break-all">{{ product.name }}</td>
-                            <td class="px-4 py-2 text-start">{{ product.quantity|default:"1" }}</td>
-                            <td class="px-4 py-2 text-start">
-                                {% if product.state == 'active' %}
-                                    <span class="text-blue-500">Используется</span>
-                                {% elif product.state == 'inactive' %}
-                                    <span class="text-lime-500">В запасе</span>
-                                {% elif product.state == 'broken' %}
-                                    <span class="text-red-500">Сломано</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr class="border-y border-gray-300">
-                            <td colspan="4" class="py-2 text-center hover:text-red-500 transition">У вас пока нет инвентаря.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div id="scroll-table">
+                    <table class="w-full table-fixed border border-gray-300 border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-t border-gray-300">
+                                <th class="w-1/12 px-4 py-2 text-start">#</th>
+                                <th class="w-7/12 px-4 py-2 text-start">Предмет</th>
+                                <th class="w-2/12 px-4 py-2 text-start">Количество</th>
+                                <th class="w-2/12 px-4 py-2 text-start">Состояние</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="scroll-table-body" class="overflow-y-scroll" style="height: 52vh;">
+                        <table class="w-full table-fixed border-x border-gray-300 border-collapse">
+                            <tbody>
+                                {% for product in products %}
+                                <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                                    <th class="w-1/12 px-4 py-2 text-start">{{ forloop.counter }}</th>
+                                    <td class="w-7/12 px-4 py-2 text-start break-all">{{ product.name }}</td>
+                                    <td class="w-2/12 px-4 py-2 text-start">{{ product.quantity|default:"1" }}</td>
+                                    <td class="w-2/12 px-4 py-2 text-start">
+                                        {% if product.state == 'active' %}
+                                            <span class="text-blue-500">Используется</span>
+                                        {% elif product.state == 'inactive' %}
+                                            <span class="text-lime-500">В запасе</span>
+                                        {% elif product.state == 'broken' %}
+                                            <span class="text-red-500">Сломано</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr class="border-y border-gray-300">
+                                    <td colspan="4" class="py-2 text-center hover:text-red-500 transition">У вас пока нет инвентаря.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Форма добавления инвентаря -->
@@ -111,7 +127,7 @@
                             <label for="inactive" class="block font-md text-lime-500">В запасе</label>
                         </div>
                         <div class="flex items-center gap-x-2">
-                            <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
+                            <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 maks:slenderman before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
                             <label for="inactive" class="block font-md text-blue-500">Используется</label>
                         </div>
                         <div class="flex items-center gap-x-2">

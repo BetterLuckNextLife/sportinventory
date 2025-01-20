@@ -15,18 +15,16 @@
                     <!-- Заголовок -->
                     <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
                     <!-- Вкладки -->
-                    <div class="h-16 flex items-center justify-between">
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a href="{% url 'inventory' %}">Инвентарь</a>
-                        </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a href="{% url 'help' %}">Справка</a>
-                        </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
-                            <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                                {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                            </a>
-                        </div>                        
+                    <div class="h-16 px-2 flex items-center justify-between gap-2">
+                        <a href="{% url 'inventory' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                            Инвентарь
+                        </a>
+                        <a href="{% url 'help' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                            Справка
+                        </a>
+                        <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                            {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                        </a>
                     </div>
                 </div>
             </div>
