@@ -17,14 +17,14 @@
                     <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
                     <!-- Вкладки -->
                     <div class="h-16 flex items-center justify-between">
-                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
                             <a href="{% url 'inventory' %}">Инвентарь</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
                             <a href="{% url 'help' %}">Справка</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
-                            <a class="text-center text-white flex justify-center items-center rounded-full bg-indigo-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
                                 {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
                             </a>
                         </div>                        
@@ -37,7 +37,7 @@
         <div class="mt-10 mx-auto px-4 flex justify-center items-start gap-10">
             <!-- Секция с таблицей -->
             <div class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-center text-indigo-600">Ваш инвентарь</h2>
+                <h2 class="text-xl font-semibold text-center text-primary-600">Ваш инвентарь</h2>
                 <hr>
                 <table class="table border border-gray-300 border-collapse w-full">
                     <thead>
@@ -50,7 +50,7 @@
                     </thead>
                     <tbody>
                         {% for product in products %}
-                        <tr class="border-y border-gray-300 hover:bg-indigo-50 transition">
+                        <tr class="border-y border-gray-300 hover:bg-primary-50 transition">
                             <th class="px-4 py-2 text-start">{{ forloop.counter }}</th>
                             <td class="px-4 py-2 text-start break-all">{{ product.name }}</td>
                             <td class="px-4 py-2 text-start">{{ product.quantity|default:"1" }}</td>
@@ -75,7 +75,7 @@
 
             <!-- Форма добавления инвентаря -->
             <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-center text-indigo-600">Добавить предмет</h2>
+                <h2 class="text-xl font-semibold text-center text-primary-600">Добавить предмет</h2>
                 <hr>
                 <form method="post" action="{% url 'inventory' %}" class="grid gap-4">
                     {% csrf_token %}
@@ -83,7 +83,7 @@
                         id="nameInput" 
                         type="text" 
                         name="name" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Предмет"
                         required>
                     <div id="nameLengthError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
@@ -93,13 +93,13 @@
                         id="quantityInput"
                         type="number" 
                         name="quantity" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" 
+                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Количество"
                         required>
                     <div id="quantityError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
                         Количество должно быть натуральным числом!
                     </div>
-                    <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-indigo-500 transition" name="state" required>
+                    <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="state" required>
                         <option value="inactive">В запасе</option>
                         <option value="active">Используется</option>
                         <option value="broken">Сломан</option>
@@ -107,19 +107,19 @@
                     <div class="px-1 grid gap-1">
                         <p>Состояние:</p>
                         <div class="m-0 flex items-center gap-x-2">
-                            <input id="inactive" name="state" type="radio" value="inactive" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-indigo-500 checked:border-indigo-500 hover:border-indigo-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition" checked>
+                            <input id="inactive" name="state" type="radio" value="inactive" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition" checked>
                             <label for="inactive" class="block font-md text-lime-500">В запасе</label>
                         </div>
                         <div class="flex items-center gap-x-2">
-                            <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-indigo-500 checked:border-indigo-500 hover:border-indigo-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
+                            <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
                             <label for="inactive" class="block font-md text-blue-500">Используется</label>
                         </div>
                         <div class="flex items-center gap-x-2">
-                            <input id="broken" name="state" type="radio" value="broken" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-indigo-500 checked:border-indigo-500 hover:border-indigo-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
+                            <input id="broken" name="state" type="radio" value="broken" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
                             <label for="inactive" class="block font-md text-red-500">Сломано</label>
                         </div>
                     </div>
-                    <button id="addButton" type="submit" class="p-2 cursor-pointer bg-indigo-600 font-semibold text-white rounded-md hover:bg-indigo-700 disabled:bg-indigo-400 transition" disabled>Добавить</button>
+                    <button id="addButton" type="submit" class="p-2 cursor-pointer bg-primary-600 font-semibold text-white rounded-md hover:bg-primary-700 disabled:bg-gray-400 transition" disabled>Добавить</button>
                 </form>
             </div>
         </div>

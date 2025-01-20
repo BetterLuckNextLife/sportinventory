@@ -44,27 +44,27 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                "primary-50": "#EEF2FF",
-                "primary-100": "#E0E7FF",
-                "primary-200": "#C7D2FE",
-                "primary-300": "#A5B4FC",
-                "primary-400": "#818CF8",
-                "primary-500": "#6366F1",
-                "primary-600": "#4F46E5",
-                "primary-700": "#4338CA",
-                "primary-800": "#3730A3",
-                "primary-900": "#312E81",
-                "primary-950": "#1E1B4B"
+                "primary-50": "#ECFDF5",
+                "primary-100": "#D1FAE5",
+                "primary-200": "#A7F3D0",
+                "primary-300": "#6EE7B7",
+                "primary-400": "#34D399",
+                "primary-500": "#10B981",
+                "primary-600": "#059669",
+                "primary-700": "#047857",
+                "primary-800": "#065F46",
+                "primary-900": "#064E3B",
+                "primary-950": "#022C22"
             }
         },
     },
     plugins: [
         /**
-         * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
-         * for forms. If you don't like it or have own styling for forms,
-         * comment the line below to disable '@tailwindcss/forms'.
-         */
-        // require('@tailwindcss/forms'),
+        * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
+        * for forms. If you don't like it or have own styling for forms,
+        * comment the line below to disable '@tailwindcss/forms'.
+        */
+//      require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
     ],

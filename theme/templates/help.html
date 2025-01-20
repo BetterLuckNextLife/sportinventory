@@ -8,46 +8,45 @@
         <title>Справка</title>
     </head>
     <body class="bg-gray-100 min-h-screen">
-
-    <!-- Шапка -->
-    <nav class="bg-white shadow-lg">
-        <div class="mx-auto max-w-10x1">
-            <div class="flex items-center justify-between">
-                <!-- Заголовок -->
-                <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
-                <!-- Вкладки -->
-                <div class="h-16 flex items-center justify-between">
-                    <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
-                        <a href="{% url 'inventory' %}">Инвентарь</a>
+        <!-- Шапка -->
+        <nav class="bg-white shadow-lg">
+            <div class="mx-auto max-w-10x1">
+                <div class="flex items-center justify-between">
+                    <!-- Заголовок -->
+                    <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
+                    <!-- Вкладки -->
+                    <div class="h-16 flex items-center justify-between">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
+                            <a href="{% url 'inventory' %}">Инвентарь</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
+                            <a href="{% url 'help' %}">Справка</a>
+                        </div>
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                                {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                            </a>
+                        </div>                        
                     </div>
-                    <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
-                        <a href="{% url 'help' %}">Справка</a>
-                    </div>
-                    <div class="h-full px-4 flex items-center border-l hover:bg-indigo-50 transition">
-                        <a class="text-center text-white flex justify-center items-center rounded-full bg-indigo-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                            {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                        </a>
-                    </div>                        
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
         <div class="container mx-auto mt-8 px-4">
             <h2 class="text-center text-3xl font-bold  mb-6">Справочная информация</h2>
             <div class="space-y-4">
                 <div class="border rounded-lg shadow-md">
-                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-indigo-50 transition" type="button" onclick="toggleCollapse('collapseOne')">
+                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseOne')">
                         Как зарегистрироваться на сайте?
                     </button>
                     <div id="collapseOne" class="hidden px-4 py-3 ">
                         Чтобы зарегистрироваться, перейдите на страницу
-                        <a href="{% url 'register' %}" class="text-indigo-500 hover:text-indigo-800 transition">регистрации</a>
+                        <a href="{% url 'register' %}" class="text-primary-500 hover:text-primary-800 transition">регистрации</a>
                         и заполните форму с вашими данными.
                     </div>
                 </div>
                 <div class="border rounded-lg shadow-md">
-                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-indigo-50 transition" type="button" onclick="toggleCollapse('collapseTwo')">
+                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseTwo')">
                         Как добавить предмет в инвентарь?
                     </button>
                     <div id="collapseTwo" class="hidden px-4 py-3 ">
@@ -55,7 +54,7 @@
                     </div>
                 </div>
                 <div class="border rounded-lg shadow-md">
-                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-indigo-50 transition" type="button" onclick="toggleCollapse('collapseThree')">
+                    <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseThree')">
                         Как редактировать или удалить предмет?
                     </button>
                     <div id="collapseThree" class="hidden px-4 py-3 ">
@@ -68,8 +67,8 @@
                 <h4 class="text-xl font-semibold  mb-2">Контакты для связи</h4>
                 <p class=" mb-4">Если у вас остались вопросы, свяжитесь с нами:</p>
                 <ul class="list-disc list-inside "> <!--TODO поменять данные-->
-                    <li>Email: <a href="mailto:support@example.com" class="text-blue-500 hover:underline hover:text-indigo-500">support@example.com</a></li>
-                    <li>Телефон: <a href="tel:+1234567890" class="text-blue-500 hover:underline hover:text-indigo-500">+1 234 567 890</a></li>
+                    <li>Email: <a href="mailto:support@example.com" class="text-blue-500 hover:underline hover:text-primary-500">support@example.com</a></li>
+                    <li>Телефон: <a href="tel:+1234567890" class="text-blue-500 hover:underline hover:text-primary-500">+1 234 567 890</a></li>
                 </ul>
             </div>
 

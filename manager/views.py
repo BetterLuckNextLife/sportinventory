@@ -31,6 +31,10 @@ def profile(request):
     return render(request, 'profile.html', {})
 
 @login_required
+def change_password(request):
+    return render(request, 'change_password.html', {})
+
+@login_required
 def inventory(request):
     if request.method == "POST":
         name = request.POST.get('name')

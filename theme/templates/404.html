@@ -7,22 +7,22 @@
         {% tailwind_css %}
     </head>
     <body class="bg-gray-100">
-         <!-- Шапка -->
-         <nav class="bg-white shadow-lg">
+        <!-- Шапка -->
+        <nav class="bg-white shadow-lg">
             <div class="mx-auto max-w-10x1">
                 <div class="flex items-center justify-between">
                     <!-- Заголовок -->
                     <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
                     <!-- Вкладки -->
                     <div class="h-16 flex items-center justify-between">
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
                             <a href="{% url 'inventory' %}">Инвентарь</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
                             <a href="{% url 'help' %}">Справка</a>
                         </div>
-                        <div class="h-full px-4 flex items-center border-l hover:bg-emerald-50 transition">
-                            <a class="text-center text-white flex justify-center items-center rounded-full bg-emerald-400" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                        <div class="h-full px-4 flex items-center border-l hover:bg-primary-50 transition">
+                            <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
                                 {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
                             </a>
                         </div>                        
@@ -30,13 +30,13 @@
                 </div>
             </div>
         </nav>
-    <div class="flex-col justify-center">
-        <h1 class="pt-20 pb-20 text-center text-9xl text-emerald-700 font-extrabold">404</h1>
-        <p class="pt-10 pb-3 text-center font-semibold text-4xl">Ой! Страница не найдена.</p>
-        <p class="pb-10 text-xl text-center">Кажется, вы заблудились. Вернитесь на 
-            <a class="" href="{% url 'inventory' %}">главную страницу</a>
-        </p>
-        <a href="{% url 'inventory' %}" class="text-4xl text-blue-500 hover:underline hover:text-emerald-500 flex justify-center text-center btn btn-primary mt-3">На главную</a>
-    </div>
-</body>
+        <div class="flex-col justify-center">
+            <h1 class="pt-20 pb-20 text-center text-9xl text-emerald-700 font-extrabold">404</h1>
+            <p class="pt-10 pb-3 text-center font-semibold text-4xl">Ой! Страница не найдена.</p>
+            <p class="pb-10 text-xl text-center">Кажется, вы заблудились. Вернитесь на 
+                <a class="" href="{% url 'inventory' %}">главную страницу</a>
+            </p>
+            <a href="{% url 'inventory' %}" class="text-4xl text-blue-500 hover:underline hover:text-emerald-500 flex justify-center text-center btn btn-primary mt-3">На главную</a>
+        </div>
+    </body>
 </html>
