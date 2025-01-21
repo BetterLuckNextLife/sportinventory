@@ -9,30 +9,20 @@ from django.contrib import messages
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
 
-def login(request):
-    return render(request, 'login.html', {})
-
-def help(request):
-    return render(request, 'help.html', {})
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = UserRegistrationForm()
-    
-    return render(request, 'register.html', {'form': form})
 
 @login_required
-def profile(request):
-    return render(request, 'profile.html', {})
+def admin_panel(request):
+    return render(request, 'admin_panel.html', {})
+
 
 @login_required
 def change_password(request):
     return render(request, 'change_password.html', {})
+
+
+def help(request):
+    return render(request, 'help.html', {})
+
 
 @login_required
 def inventory(request):
@@ -65,3 +55,24 @@ def inventory(request):
     # Получаем продукты пользователя
     products = Product.objects.filter(owner=request.user)
     return render(request, 'inventory.html', {'products': products})
+
+
+def login(request):
+    return render(request, 'login.html', {})
+
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html', {})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+
+    return render(request, 'register.html', {'form': form})

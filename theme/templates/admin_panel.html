@@ -1,12 +1,13 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html>
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% tailwind_css %}
-        <title>404</title>
+        <title>Управление инвентарём</title>
     </head>
+
     <body class="bg-gray-100">
         <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
             <!-- Панель навигации -->
@@ -28,15 +29,7 @@
             </nav>
             <!-- Основной контейнер -->
             <div class="w-full p-10 gap-10 flex justify-center items-start">
-                <div class="grid">
-                    <h1 class="pb-10 text-primary-500 text-center text-9xl font-extrabold">404</h1>
-                    <p class="p-2 text-center font-semibold text-4xl">Ой! Страница не найдена.</p>
-                    <p class="p-2 text-xl text-center">
-                        Кажется, вы заблудились. Вернитесь на
-                        <a href="{% url 'inventory' %}" class="text-primary-600 hover:text-primary-800 transition">главную</a>
-                        страницу.
-                    </p>
-                </div>
+                <p class="text-orange-500 text-9xl font-bold">Ясно ☼</p>
             </div>
         </div>
     </body>

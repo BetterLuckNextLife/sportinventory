@@ -7,68 +7,48 @@
         {% tailwind_css %}
         <title>Управление инвентарём</title>
     </head>
-
-    <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-        } 
-        ::-webkit-scrollbar-track {
-            background-color: #f0f0f0;
-        } 
-        ::-webkit-scrollbar-thumb {
-            background-color: #d0d0d0;
-        }
-    </style>
-
-    <body class="bg-gray-100">
-        <!-- Шапка -->
-        <nav class="bg-white shadow-lg">
-            <div class="mx-auto max-w-10x1">
-                <div class="flex items-center justify-between">
-                    <!-- Заголовок -->
-                    <h1 class="m-0 p-4 text-2xl">Спортивный инвентарь</h1>
-                    <!-- Вкладки -->
-                    <div class="h-16 px-2 flex items-center justify-between gap-2">
-                        <a href="{% url 'inventory' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                            Инвентарь
-                        </a>
-                        <a href="{% url 'help' %}" class="p-3 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                            Справка
-                        </a>
-                        <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                            {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                        </a>
-                    </div>
+    <body id="body">
+        <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
+            <!-- Панель навигации -->
+            <nav class="w-full flex justify-between items-center bg-white shadow-lg">
+                <div class="h-full p-4 flex items-center">
+                    <h1 class="text-2xl">Спортивный инвентарь</h1>
                 </div>
-            </div>
-        </nav>
-
-        <!-- Основной контейнер -->
-        <div class="mt-10 mx-auto px-4 flex justify-center items-start gap-10">
-            <!-- Секция с таблицей -->
-            <div class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-center text-primary-600">Ваш инвентарь</h2>
-                <hr>
-                <div id="scroll-table">
-                    <table class="w-full table-fixed border border-gray-300 border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 border-t border-gray-300">
-                                <th class="w-1/12 px-4 py-2 text-start">#</th>
-                                <th class="w-7/12 px-4 py-2 text-start">Предмет</th>
-                                <th class="w-2/12 px-4 py-2 text-start">Количество</th>
-                                <th class="w-2/12 px-4 py-2 text-start">Состояние</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div id="scroll-table-body" class="overflow-y-scroll" style="height: 52vh;">
-                        <table class="w-full table-fixed border-x border-gray-300 border-collapse">
+                <div class="h-full p-2 gap-x-2 flex justify-between items-center">
+                    <a href="{% url 'inventory' %}" class="p-2 flex items-center text-lg bg-gray-100 rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                        Инвентарь
+                    </a>
+                    <a href="{% url 'help' %}" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                        Справка
+                    </a>
+                    <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                        {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                    </a>
+                </div>
+            </nav>
+            <!-- Основной контейнер -->
+            <div class="w-full p-10 gap-10 flex justify-center items-start">
+                <!-- Секция с таблицей -->
+                <div id="scroll-table" class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-center text-primary-600">Ваш инвентарь</h2>
+                    <hr>
+                    <div class="overflow-y-scroll">
+                        <table class="border border-gray-300 border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 border-t border-gray-300">
+                                    <th class="px-4 py-2 text-start">#</th>
+                                    <th class="px-4 py-2 text-start">Предмет</th>
+                                    <th class="px-4 py-2 text-start">Количество</th>
+                                    <th class="px-4 py-2 text-start">Состояние</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 {% for product in products %}
                                 <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
-                                    <th class="w-1/12 px-4 py-2 text-start">{{ forloop.counter }}</th>
-                                    <td class="w-7/12 px-4 py-2 text-start break-all">{{ product.name }}</td>
-                                    <td class="w-2/12 px-4 py-2 text-start">{{ product.quantity|default:"1" }}</td>
-                                    <td class="w-2/12 px-4 py-2 text-start">
+                                    <th class="px-4 py-2 text-start">{{ forloop.counter }}</th>
+                                    <td class="px-4 py-2 text-start break-all">{{ product.name }}</td>
+                                    <td class="px-4 py-2 text-start">{{ product.quantity|default:"1" }}</td>
+                                    <td class="px-4 py-2 text-start">
                                         {% if product.state == 'active' %}
                                             <span class="text-blue-500">Используется</span>
                                         {% elif product.state == 'inactive' %}
@@ -87,133 +67,145 @@
                         </table>
                     </div>
                 </div>
-            </div>
-
-            <!-- Форма добавления инвентаря -->
-            <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-center text-primary-600">Добавить предмет</h2>
-                <hr>
-                <form method="post" action="{% url 'inventory' %}" class="grid gap-4">
-                    {% csrf_token %}
-                    <input 
-                        id="nameInput" 
-                        type="text" 
-                        name="name" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Предмет"
-                        required>
-                    <div id="nameLengthError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
-                        Название не может быть длиннее 256 символов!
-                    </div>
-                    <input 
-                        id="quantityInput"
-                        type="number" 
-                        name="quantity" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Количество"
-                        required>
-                    <div id="quantityError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
-                        Количество должно быть натуральным числом!
-                    </div>
-                    <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="state" required>
-                        <option value="inactive">В запасе</option>
-                        <option value="active">Используется</option>
-                        <option value="broken">Сломан</option>
-                    </select> -->
-                    <div class="px-1 grid gap-1">
-                        <p>Состояние:</p>
-                        <div class="m-0 flex items-center gap-x-2">
-                            <input id="inactive" name="state" type="radio" value="inactive" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition" checked>
-                            <label for="inactive" class="block font-md text-lime-500">В запасе</label>
+                <!-- Форма добавления инвентаря -->
+                <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-center text-primary-600">Добавить предмет</h2>
+                    <hr>
+                    <form method="post" action="{% url 'inventory' %}" class="grid gap-4">
+                        {% csrf_token %}
+                        <input 
+                            id="nameInput" 
+                            type="text" 
+                            name="name" 
+                            class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Предмет"
+                            required>
+                        <div id="nameLengthError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
+                            Название не может быть длиннее 256 символов!
                         </div>
-                        <div class="flex items-center gap-x-2">
-                            <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 maks:slenderman before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
-                            <label for="inactive" class="block font-md text-blue-500">Используется</label>
+                        <input 
+                            id="quantityInput"
+                            type="number" 
+                            name="quantity" 
+                            class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Количество"
+                            required>
+                        <div id="quantityError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
+                            Количество должно быть натуральным числом!
                         </div>
-                        <div class="flex items-center gap-x-2">
-                            <input id="broken" name="state" type="radio" value="broken" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
-                            <label for="inactive" class="block font-md text-red-500">Сломано</label>
+                        <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="state" required>
+                            <option value="inactive">В запасе</option>
+                            <option value="active">Используется</option>
+                            <option value="broken">Сломан</option>
+                        </select> -->
+                        <div class="px-1 grid gap-1">
+                            <p>Состояние:</p>
+                            <div class="m-0 flex items-center gap-x-2">
+                                <input id="inactive" name="state" type="radio" value="inactive" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition" checked>
+                                <label for="inactive" class="block font-md text-lime-500">В запасе</label>
+                            </div>
+                            <div class="flex items-center gap-x-2">
+                                <input id="active" name="state" type="radio" value="active" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 maks:slenderman before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
+                                <label for="inactive" class="block font-md text-blue-500">Используется</label>
+                            </div>
+                            <div class="flex items-center gap-x-2">
+                                <input id="broken" name="state" type="radio" value="broken" class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition">
+                                <label for="inactive" class="block font-md text-red-500">Сломано</label>
+                            </div>
                         </div>
-                    </div>
-                    <button id="addButton" type="submit" class="p-2 cursor-pointer bg-primary-600 font-semibold text-white rounded-md hover:bg-primary-700 disabled:bg-gray-400 transition" disabled>Добавить</button>
-                </form>
+                        <button id="addButton" type="submit" class="p-2 cursor-pointer bg-primary-600 font-semibold text-white rounded-md hover:bg-primary-700 disabled:bg-gray-400 transition" disabled>Добавить</button>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const nameInput = document.getElementById("nameInput")
-                const nameLengthError = document.getElementById("nameLengthError")
-                const quantityInput = document.getElementById("quantityInput")
-                const quantityError = document.getElementById("quantityError")
-                const addButton = document.getElementById("addButton")
-
-                let logs = [false, false, true]
-
-                console.log(logs)
-
-                nameInput.addEventListener("input", () => {
-                    const name = nameInput.value
-
-                    // Ошибка длины имени
-                    if (name.length > 256) {
-                        nameLengthError.classList.remove("hidden")
-                        nameInput.classList.add("focus:outline-red-500")
-                        logs[0] = false
-                    } else {
-                        nameLengthError.classList.add("hidden")
-                        nameInput.classList.remove("focus:outline-red-500")
-                        logs[0] = true
-                    }
-
-                    switchButton();
-                })
-
-                quantityInput.addEventListener("input", () => {
-                    const quantity = quantityInput.value.trim()
-
-                    // Ошибка количества
-                    if (quantity === "") {
-                        quantityError.classList.add("hidden")
-                        quantityInput.classList.remove("focus:outline-red-500")
-                        logs[1] = false
-
-                        return
-                    }
-
-                    const quantityValue = parseFloat(quantity, 10)
-
-                    if (isNaN(quantityValue) || quantityValue < 1 || quantityValue % 1 != 0.0) {
-                        quantityError.classList.remove("hidden")
-                        quantityInput.classList.add("focus:outline-red-500")
-                        logs[1] = false
-                    } else {
-                        quantityError.classList.add("hidden")
-                        quantityInput.classList.remove("focus:outline-red-500")
-                        logs[1] = true
-                    }
-
-                    switchButton();
-                });
-
-                function switchButton() {
-                    if (all(logs)) {
-                        addButton.disabled = false
-                    } else {
-                        addButton.disabled = true
-                    }
-                }
-
-                function all(array) {
-                    for (let i = 0; i < array.length; i++) {
-                        if (array[i] === false) {
-                            return false
-                        }
-                    }
-
-                    return true
-                }
-            });
-        </script>
     </body>
+
+    <script>
+        const body = document.getElementById("body");
+        const table = document.getElementById("scroll-table");
+        let bodyHeight;
+
+        window.addEventListener('resize', resizeTable(), true);
+
+        function resizeTable() {
+            bodyHeight = body.offsetHeight;
+            console.log(0.9*bodyHeight - 2*10*4)
+            table.style.height = `${0.9*bodyHeight - 2*10*5}px`;
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nameInput = document.getElementById("nameInput")
+            const nameLengthError = document.getElementById("nameLengthError")
+            const quantityInput = document.getElementById("quantityInput")
+            const quantityError = document.getElementById("quantityError")
+            const addButton = document.getElementById("addButton")
+
+            let logs = [false, false, true]
+
+            console.log(logs)
+
+            nameInput.addEventListener("input", () => {
+                const name = nameInput.value
+
+                // Ошибка длины имени
+                if (name.length > 256) {
+                    nameLengthError.classList.remove("hidden")
+                    nameInput.classList.add("focus:outline-red-500")
+                    logs[0] = false
+                } else {
+                    nameLengthError.classList.add("hidden")
+                    nameInput.classList.remove("focus:outline-red-500")
+                    logs[0] = true
+                }
+
+                switchButton();
+            })
+
+            quantityInput.addEventListener("input", () => {
+                const quantity = quantityInput.value.trim()
+
+                // Ошибка количества
+                if (quantity === "") {
+                    quantityError.classList.add("hidden")
+                    quantityInput.classList.remove("focus:outline-red-500")
+                    logs[1] = false
+
+                    return
+                }
+
+                const quantityValue = parseFloat(quantity, 10)
+
+                if (isNaN(quantityValue) || quantityValue < 1 || quantityValue % 1 != 0.0) {
+                    quantityError.classList.remove("hidden")
+                    quantityInput.classList.add("focus:outline-red-500")
+                    logs[1] = false
+                } else {
+                    quantityError.classList.add("hidden")
+                    quantityInput.classList.remove("focus:outline-red-500")
+                    logs[1] = true
+                }
+
+                switchButton();
+            });
+
+            function switchButton() {
+                if (all(logs)) {
+                    addButton.disabled = false
+                } else {
+                    addButton.disabled = true
+                }
+            }
+
+            function all(array) {
+                for (let i = 0; i < array.length; i++) {
+                    if (array[i] === false) {
+                        return false
+                    }
+                }
+
+                return true
+            }
+        });
+    </script>
 </html>
