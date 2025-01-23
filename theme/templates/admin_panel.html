@@ -16,6 +16,9 @@
                     <h1 class="text-2xl">Спортивный инвентарь</h1>
                 </div>
                 <div class="h-full p-2 gap-x-2 flex justify-between items-center">
+                    <a href="{% url 'admin_panel' %}" class="p-2 flex items-center text-lg bg-gray-100 rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                        Админ-панель
+                    </a>
                     <a href="{% url 'inventory' %}" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
                         Инвентарь
                     </a>
@@ -29,8 +32,75 @@
             </nav>
             <!-- Основной контейнер -->
             <div class="w-full p-10 gap-10 flex justify-center items-start">
-                <p class="text-orange-500 text-9xl font-bold">Ясно ☼</p>
+                <div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-semibold text-center text-primary-600">Заявки на инвентарь</h2>
+                    <hr>
+                    <div class="w-full border">
+                        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('1')">
+                            Заявка от login1
+                        </button>
+                        <div id="1" class="hidden px-4 p-2 gap-2 flex border-t">
+                            <p class="text-primary-700 font-medium">5</p>
+                            <p>•</p>
+                            <p>Фигня</p>
+                        </div>
+                    </div>
+                    <div class="w-full border">
+                        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('2')">
+                            Заявка от login2
+                        </button>
+                        <div id="2" class="hidden px-4 p-2 gap-2 flex border-t">
+                            <p class="text-primary-700 font-medium">625</p>
+                            <p>•</p>
+                            <p>Хрень</p>
+                        </div>
+                    </div>
+                    <div class="w-full border">
+                        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('3')">
+                            Заявка от EgorRy
+                        </button>
+                        <div id="3" class="hidden px-4 p-2 gap-2 flex border-t">
+                            <p class="text-primary-700 font-medium">1048576</p>
+                            <p>•</p>
+                            <p>Ясно ☼</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-semibold text-center text-primary-600">Заявки на регистрацию</h2>
+                    <hr>
+                    <table class="w-full border border-gray-300 border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border border-gray-300">
+                                <th class="px-4 py-2 text-start">#</th>
+                                <th class="px-4 py-2 text-start">ФИО</th>
+                                <th class="px-4 py-2 text-start">Логин</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                                <th class="px-4 py-2 text-start">1</th>
+                                <td class="px-4 py-2 text-start break-all">ФИО</td>
+                                <td class="px-4 py-2 text-start">login</td>
+                            </tr>
+                            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                                <th class="px-4 py-2 text-start">2</th>
+                                <td class="px-4 py-2 text-start break-all">ФИО</td>
+                                <td class="px-4 py-2 text-start">login</td>
+                            </tr>
+                            <tr class="border-y border-gray-300">
+                                <td colspan="4" class="py-2 text-center text-gray-400 transition">Заявки отсутствуют.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </body>
+    <script>
+        function toggleCollapse(id) {
+            const content = document.getElementById(id);
+            content.classList.toggle("hidden");
+        }
+    </script>
 </html>
