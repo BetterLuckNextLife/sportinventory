@@ -4,18 +4,32 @@ from .forms import UserRegistrationForm
 from .models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from functools import wraps
 
+def verified_check(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.verified:
+            return view_func(request, *args, **kwargs)
+        return redirect('not_verified')  # Правильный редирект по URL name или путь
+    return wrapper
+
+def is_admin(user):
+    return User.is_staff == True
 
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
 
 
 @login_required
+@verified_check
 def admin_panel(request):
     return render(request, 'admin_panel.html', {})
 
 
 @login_required
+@verified_check
 def change_password(request):
     return render(request, 'change_password.html', {})
 
@@ -25,6 +39,7 @@ def help(request):
 
 
 @login_required
+@verified_check
 def inventory(request):
     if request.method == "POST":
         name = request.POST.get('name')
