@@ -1,79 +1,89 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        {% tailwind_css %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Справка</title>
-    </head>
-    <body class="bg-gray-100 min-h-screen">
-        <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
-            <!-- Панель навигации -->
-            <nav class="w-full flex justify-between items-center bg-white shadow-lg">
-                <div class="h-full p-4 flex items-center">
-                    <h1 class="text-2xl">Спортивный инвентарь</h1>
-                </div>
-                <div class="h-full p-2 gap-x-2 flex justify-between items-center">
-                    <a href="{% url 'inventory' %}" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                        Инвентарь
-                    </a>
-                    <a href="{% url 'help' %}" class="p-2 flex items-center text-lg bg-gray-100 rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                        Справка
-                    </a>
-                    <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
-                        {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                    </a>
-                </div>
-            </nav>
-            <!-- Основной контейнер -->
-            <div class="w-full p-10 gap-10 flex justify-center items-start">
-                <div class="w-full grid">
-                    <h2 class="text-center text-3xl font-bold mb-6">Справочная информация</h2>
-                    <div class="space-y-4">
-                        <div class="border rounded-lg shadow-md">
-                            <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseOne')">
-                                Как зарегистрироваться на сайте?
-                            </button>
-                            <div id="collapseOne" class="hidden px-4 py-3 ">
-                                Чтобы зарегистрироваться, перейдите на страницу
-                                <a href="{% url 'register' %}" class="text-primary-500 hover:text-primary-800 transition">регистрации</a>
-                                и заполните форму с вашими данными.
-                            </div>
-                        </div>
-                        <div class="border rounded-lg shadow-md">
-                            <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseTwo')">
-                                Как добавить предмет в инвентарь?
-                            </button>
-                            <div id="collapseTwo" class="hidden px-4 py-3 ">
-                                После авторизации перейдите на страницу управления инвентарём и заполните форму для добавления нового предмета.
-                            </div>
-                        </div>
-                        <div class="border rounded-lg shadow-md">
-                            <button class="w-full text-left px-4 py-3 bg-white font-medium  hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapseThree')">
-                                Как редактировать или удалить предмет?
-                            </button>
-                            <div id="collapseThree" class="hidden px-4 py-3 ">
-                                Чтобы редактировать или удалить предмет, используйте соответствующие кнопки в таблице управления инвентарём.
-                            </div>
+
+<head>
+    {% tailwind_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Справка</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
+        <!-- Панель навигации -->
+        <nav class="w-full flex justify-between items-center bg-white shadow-lg">
+            <div class="h-full p-4 flex items-center">
+                <h1 class="text-2xl">Спортивный инвентарь</h1>
+            </div>
+            <div class="h-full p-2 gap-x-2 flex justify-between items-center">
+                <a href="{% url 'inventory' %}" title="Инвентарь" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Инвентарь
+                </a>
+                <a href="{% url 'help' %}" title="Справка" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Справка
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" title="Профиль" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
+                    {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                </a>
+                {% else %}
+                <a href="{% url 'profile' %}" title="Вы не авторизованы" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
+                    ??
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Основной контейнер -->
+        <div class="w-full p-10 gap-10 flex justify-center items-start">
+            <div class="w-full grid">
+                <h2 class="text-center text-3xl font-bold mb-6">Справочная информация</h2>
+                <div class="space-y-4">
+                    <div class="w-full border shadow-md">
+                        <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse1')">
+                            Как зарегистрироваться на сайте?
+                        </button>
+                        <div id="collapse1" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
+                            Чтобы зарегистрироваться, перейдите на страницу
+                            <a href="{% url 'register' %}" class="text-primary-500 hover:text-primary-800 transition">регистрации</a>
+                            и заполните форму с вашими данными.
                         </div>
                     </div>
-                    <div class="mt-10">
-                        <h4 class="text-xl font-semibold  mb-2">Контакты для связи</h4>
-                        <p class=" mb-4">Если у вас остались вопросы, свяжитесь с нами:</p>
-                        <ul class="list-disc list-inside "> <!--TODO поменять данные-->
-                            <li>Email: <a href="mailto:support@example.com" class="text-blue-500 hover:underline hover:text-primary-500">support@example.com</a></li>
-                            <li>Телефон: <a href="tel:+1234567890" class="text-blue-500 hover:underline hover:text-primary-500">+1 234 567 890</a></li>
-                        </ul>
+                    <div class="w-full border shadow-md">
+                        <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse2')">
+                            Как добавить предмет в инвентарь?
+                        </button>
+                        <div id="collapse2" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
+                            После авторизации перейдите на страницу управления инвентарём и заполните форму для добавления нового предмета.
+                        </div>
                     </div>
+                    <div class="w-full border shadow-md">
+                        <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse3')">
+                            Как редактировать или удалить предмет?
+                        </button>
+                        <div id="collapse3" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
+                            Чтобы редактировать или удалить предмет, используйте соответствующие кнопки в таблице управления инвентарём.
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-10">
+                    <h4 class="text-xl font-semibold  mb-2">Контакты для связи</h4>
+                    <p class=" mb-4">Если у вас остались вопросы, свяжитесь с нами:</p>
+                    <ul class="list-disc list-inside ">
+                        <!--TODO поменять данные-->
+                        <li>Email: <a href="mailto:support@example.com" class="text-blue-500 hover:underline hover:text-primary-500">support@example.com</a></li>
+                        <li>Телефон: <a href="tel:+1234567890" class="text-blue-500 hover:underline hover:text-primary-500">+1 234 567 890</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </body>
-    <script>
-        function toggleCollapse(id) {
-            const content = document.getElementById(id);
-            content.classList.toggle("hidden");
-        }
-    </script>
+    </div>
+</body>
+<script>
+    function toggleCollapse(id) {
+        const content = document.getElementById(id);
+        content.classList.toggle("hidden");
+    }
+</script>
+
 </html>
