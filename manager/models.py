@@ -28,10 +28,33 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} x{self.quantity} ({self.get_state_display()})"
 
-
+# Пользователь создаёт запрос. После одобрения все изменения вносятся в базу и запись удаляется
 class Application(models.Model):
-    ...
+    ACTIONS = [
+        ('None', 'None'),
+        ('drop', 'Списать оборудование'),
+        ('request', 'Запросить оборудование')
+    ]
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products') # Автор заявки
+    name = models.CharField(max_length=256)
+    quantity = models.PositiveIntegerField(default=1)
+    '''if action == "request":
+            ...
+    На запрос выделяем quantity вещей. Если у storage нет такого количества, то закупаем через Purchase'''
+    action = models.CharField(max_length=32, choices=ACTIONS, default='None')
 
 
-class Buying(models.Model):
-    ...
+class Purchase(models.Model):
+    # owner = storage
+    STATES = [
+        ('none', 'None'),
+        ('bought', 'Куплено'),
+        ('delivered', 'Доставлено')
+    ]
+    # Если доставлено, то надо добавить quantity вещей storage'у
+
+    name = models.CharField(max_length=256)
+    quantity = models.PositiveIntegerField(default=1)
+    state = models.CharField(max_length=20, choices=STATES, default='none')
+
