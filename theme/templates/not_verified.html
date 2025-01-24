@@ -1,0 +1,47 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% tailwind_css %}
+        <title>404</title>
+    </head>
+    <body class="bg-gray-100">
+        <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
+            <!-- Панель навигации -->
+            <nav class="w-full flex justify-between items-center bg-white shadow-lg">
+                <div class="h-full p-4 flex items-center">
+                    <h1 class="text-2xl">Спортивный инвентарь</h1>
+                </div>
+                <div class="h-full p-2 gap-x-2 flex justify-between items-center">
+                    <a href="{% url 'inventory' %}" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                        Инвентарь
+                    </a>
+                    <a href="{% url 'help' %}" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                        Справка
+                    </a>
+                    <a class="text-center text-white flex justify-center items-center rounded-full bg-primary-500 hover:bg-primary-700 transition" style="width: 50px; height: 50px;" role="button" href="{% url 'profile' %}">
+                        {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                    </a>
+                </div>
+            </nav>
+            <!-- Основной контейнер -->
+            <div class="w-full p-10 gap-10 flex justify-center items-start">
+                <div class="grid">
+                    <h1 class="pb-10 text-primary-500 text-center text-9xl font-bold">!</h1>
+                    <p class="p-2 text-center font-semibold text-4xl">Ваш аккаунт не подтверждён</p>
+                    <p class="p-2 text-xl text-center">
+                        Ожидайте ответа администрации.     
+                    </p>
+                    <a href="{% url 'inventory' %}"
+                       class="mt-8 p-2 bg-primary-500 text-center text-white font-bold rounded hover:bg-primary-700 transition"
+                       style="display: block; width: fit-content; margin: 0 auto;">
+                       Главная страница
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

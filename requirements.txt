@@ -3,5 +3,5 @@ asgiref
 Django
 django-browser-reload
 django-tailwind
-python-decoupl
+python-decouple
 sqlparse

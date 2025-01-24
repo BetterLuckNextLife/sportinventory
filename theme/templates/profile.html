@@ -56,11 +56,14 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button 
-                            type="button"
-                            class="p-2 text-white bg-red-500 rounded hover:bg-red-700 transition font-semibold">
-                            Выйти
-                        </button>
+                        <form method="post" action="{% url 'logout' %}" class="flex justify-center">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="w-1/4 p-2 text-white bg-red-500 rounded hover:bg-red-700 transition font-semibold">
+                                Выйти
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

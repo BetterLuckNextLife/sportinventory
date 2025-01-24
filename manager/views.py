@@ -60,6 +60,8 @@ def inventory(request):
 def login(request):
     return render(request, 'login.html', {})
 
+def not_verified(request):
+    return render(request, 'not_verified.html', {})
 
 @login_required
 def profile(request):
@@ -76,3 +78,5 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'register.html', {'form': form})
+
+
