@@ -27,19 +27,21 @@
                 </div>
             </nav>
             <!-- Основной контейнер -->
+
+            <!-- Основной контейнер -->
             <div class="w-full p-10 gap-10 flex justify-center items-start">
                 <div class="grid">
                     <h1 class="pb-10 text-primary-500 text-center text-9xl font-bold">!</h1>
                     <p class="p-2 text-center font-semibold text-4xl">Ваш аккаунт не подтверждён</p>
                     <p class="p-2 text-xl text-center">
-                        Ожидайте ответа администрации.     
+                        Ожидайте ответа администрации.
                     </p>
-                    <a href="{% url 'inventory' %}"
-                       class="mt-8 p-2 bg-primary-500 text-center text-white font-bold rounded hover:bg-primary-700 transition"
-                       style="display: block; width: fit-content; margin: 0 auto;">
-                       Главная страница
-                    </a>
-
+                    <div class="mt-8 flex justify-center items-center">
+                        <a href="{% url 'inventory' %}"
+                           class="p-2 bg-primary-500 text-center text-white font-bold rounded hover:bg-primary-700 transition">
+                           Главная страница
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
