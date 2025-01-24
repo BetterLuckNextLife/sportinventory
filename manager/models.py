@@ -27,3 +27,11 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} x{self.quantity} ({self.get_state_display()})"
+
+
+class Application(models.Model):
+    ...
+
+
+class Buying(models.Model):
+    ...
