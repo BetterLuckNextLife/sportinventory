@@ -1,14 +1,8 @@
 .env
 __pycache__/
 venv/
-"__pycache__/" 
+.idea/
 
 # Временно
 db.sqlite3
 sportinventory/settings.py
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/sportinventory.iml
-.idea/misc.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml

@@ -16,14 +16,14 @@ def verified_check(view_func):
     return wrapper
 
 def is_admin(user):
-    return User.is_staff == True
+    return user.is_staff == True
 
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
 
 
 @login_required
-@verified_check
+@user_passes_test(is_admin)
 def admin_panel(request):
     return render(request, 'admin_panel.html', {})
 
