@@ -36,7 +36,7 @@ class Application(models.Model):
         ('request', 'Запросить оборудование')
     ]
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products') # Автор заявки
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications') # Автор заявки
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     '''if action == "request":
