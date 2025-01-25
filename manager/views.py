@@ -7,16 +7,20 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from functools import wraps
 
+
 def verified_check(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if request.user.verified:
             return view_func(request, *args, **kwargs)
         return redirect('not_verified')  # Правильный редирект по URL name или путь
+
     return wrapper
+
 
 def is_admin(user):
     return user.is_staff == True
+
 
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
@@ -75,8 +79,10 @@ def inventory(request):
 def login(request):
     return render(request, 'login.html', {})
 
+
 def not_verified(request):
     return render(request, 'not_verified.html', {})
+
 
 @login_required
 def profile(request):
@@ -93,5 +99,3 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'register.html', {'form': form})
-
-

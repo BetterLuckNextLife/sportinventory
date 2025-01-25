@@ -49,33 +49,46 @@
                     {% csrf_token %}
                     <input 
                         type="text" 
-                        name="first_name" 
+                        name="firstName" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Имя"
+                        minlength="1"
+                        maxlength="64"
+                        pattern="^[а-яА-Я ]+$"
                         required>
                     <input 
                         type="text" 
-                        name="last_name" 
+                        name="lastName" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Фамилия"
+                        minlength="1"
+                        maxlength="64"
+                        pattern="^[а-яА-Я ]+$"
                         required>
                     <input 
                         type="text" 
                         name="username" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Логин"
+                        minlength="8"
+                        maxlength="32"
+                        pattern="^[a-zA-Z0-9_]+$"
                         required>
                     <input 
                         type="password" 
                         name="password1" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Пароль"
+                        minlength="8"
+                        maxlength="64"
                         required>
                     <input 
                         type="password" 
                         name="password2" 
                         class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
                         placeholder="Подтвердите пароль"
+                        minlength="8"
+                        maxlength="64"
                         required>
                     <!-- Ошибка при неправильных данных TODO настроить вывод ошибки-->
                     {% if form.non_field_errors %}
@@ -98,5 +111,39 @@
         </div>
     </div>
 </body>
+
+<script>
+    const firstName = document.getElementsByName("firstName")[0];
+    const lastName = document.getElementsByName("lastName")[0];
+    const username = document.getElementsByName("username")[0];
+    const password1 = document.getElementsByName("password1")[0];
+    const password2 = document.getElementsByName("password2")[0];
+
+    firstName.addEventListener("input", (event) => {
+        if (firstName.value.patternMismatch) {
+            firstName.setCustomValidity("Введите имя на русском языке!");
+        }
+    });
+
+    lastName.addEventListener("input", (event) => {
+        if (lastName.value.patternMismatch) {
+            lastName.setCustomValidity("Введите фамилию на русском языке!");
+        }
+    });
+
+    username.addEventListener("input", (event) => {
+        if (username.validity.tooShort) {
+            // username.setCustomValidity(`Минимальная длина логина: ${username.minLength} сим.; вы ввели: ${username.value.length} сим.`);
+        }
+        console.log(username.value)
+    });
+
+    password1.addEventListener("input", (event) => {
+        if (password1.validity.tooShort) {
+            // password1.setCustomValidity(`Минимальная длина пароля: ${password1.minLength} сим.; вы ввели: ${password1.value.length} сим.`);
+        }
+    });
+
+</script>
 
 </html>
