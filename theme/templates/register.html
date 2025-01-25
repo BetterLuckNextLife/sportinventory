@@ -17,10 +17,15 @@
                 <h1 class="text-2xl">Спортивный инвентарь</h1>
             </div>
             <div class="h-full p-2 gap-x-2 flex justify-between items-center">
-                <a href="{% url 'inventory' %}" title="Инвентарь" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                {% if user.is_staff %}
+                <a id="admin_panel" href="{% url 'admin_panel' %}" title="Админ-панель" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Админ-панель
+                </a>
+                {% endif %}
+                <a id="inventory" href="{% url 'inventory' %}" title="Инвентарь" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
                     Инвентарь
                 </a>
-                <a href="{% url 'help' %}" title="Справка" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                <a id="help" href="{% url 'help' %}" title="Справка" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
                     Справка
                 </a>
                 {% if user.is_authenticated %}
