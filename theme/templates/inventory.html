@@ -9,7 +9,7 @@
     <title>Управление инвентарём</title>
 </head>
 
-<body id="body">
+<body class="bg-gray-100">
     <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
         <!-- Панель навигации -->
         <nav class="w-full flex justify-between items-center bg-white shadow-lg">
@@ -51,7 +51,7 @@
                             <th class="p-2 text-center">#</th>
                             <th class="p-2 text-start">Предмет</th>
                             <th class="p-2 text-start">Количество</th>
-                            <th class="p-2 text-center">Состояние</th>
+                            <th class="p-2 text-start">Состояние</th>
                             <th class="p-2 text-center">💾</th>
                         </tr>
                     </thead>
@@ -99,70 +99,59 @@
             {% if user.is_staff %}
             <!-- Форма добавления инвентаря -->
             <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-center text-primary-600">Добавить предмет</h2>
+                <h2 class="text-xl font-semibold text-center text-primary-600">Добавить предметы</h2>
                 <hr>
-                <form id="addInventory" method="post" action="{% url 'inventory' %}" class="grid gap-4">
-                    {% csrf_token %}
-                    <input
-                        name="name"
-                        type="text"
-                        placeholder="Предмет"
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
-                        maxlength="256"
-                        required
-                    >
-                    <input
-                        name="quantity"
-                        type="number"
-                        placeholder="Количество"
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
-                        min="1"
-                        step="1"
-                        required
-                    >
-                    <!-- <select class="p-2 text-gray-800 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="state" required>
-                            <option value="inactive">В запасе</option>
-                            <option value="active">Используется</option>
-                            <option value="broken">Сломан</option>
-                        </select> -->
-                    <div class="px-1 grid gap-1">
-                        <p>Состояние:</p>
-                        <div class="m-0 flex items-center gap-x-2">
+                <datalist id="inventoryList">
+                    {% for product in products %}
+                    <option value="{{ product.name }}">
+                        {% if product.state == 'inactive' %}В запасе:
+                        {% elif product.state == 'active' %}Используется:
+                        {% elif product.state == 'broken' %}Сломано:
+                        {% endif %}
+                        {{ product.quantity|default:"1" }}
+                    </option>
+                    {% endfor %}
+                </datalist>
+                {% csrf_token %}
+                <form class="gap-4 grid">
+                    <div id="inventoryFormBody" class="gap-2 grid">
+                        <div name="position" class="p-2 gap-2 grid bg-gray-50 border rounded">
                             <input
-                                id="inactive"
-                                name="state"
-                                type="radio"
-                                value="inactive"
-                                class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition"
-                                checked
+                                name="name"
+                                list="inventoryList"
+                                type="text"
+                                placeholder="Предмет"
+                                class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                                maxlength="256"
+                                required
                             >
-                            <label for="inactive" class="block font-md text-lime-500">В запасе</label>
-                        </div>
-                        <div class="flex items-center gap-x-2">
                             <input
-                                id="active"
-                                name="state"
-                                type="radio"
-                                value="active"
-                                class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 maks:slenderman before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition"
+                                name="quantity"
+                                type="number"
+                                placeholder="Количество"
+                                class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                                min="1"
+                                step="1"
+                                required
                             >
-                            <label for="inactive" class="block font-md text-blue-500">Используется</label>
-                        </div>
-                        <div class="flex items-center gap-x-2">
-                            <input
-                                id="broken"
-                                name="state"
-                                type="radio"
-                                value="broken"
-                                class="relative size-4 appearance-none cursor-pointer rounded-full border border-gray-300 bg-white before:checked:absolute before:checked:inset-1 before:checked:rounded-full before:checked:bg-primary-500 checked:border-primary-500 hover:border-primary-500 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 transition"
+                            <button
+                                type="button"
+                                class="bg-red-50 hover:bg-red-100 text-center text-sm text-red-500 border border-red-300 rounded cursor-pointer transition"
                             >
-                            <label for="inactive" class="block font-md text-red-500">Сломано</label>
+                                Удалить
+                            </button>
                         </div>
+                        <button
+                            id="addButton"
+                            type="button"
+                            class="mx-2 bg-green-50 hover:bg-green-100 text-center text-sm text-green-500 border border-green-300 rounded cursor-pointer transition"
+                        >
+                            Добавить
+                        </button>
                     </div>
                     <button
-                        id="addButton"
                         type="submit"
-                        class="p-2 cursor-pointer bg-primary-600 font-semibold text-white rounded-md hover:bg-primary-700 disabled:bg-gray-400 transition">
+                        class="w-full p-2 bg-primary-600 text-center text-white font-semibold rounded hover:bg-primary-700 transition">
                         Отправить
                     </button>
                 </form>
@@ -172,32 +161,57 @@
             <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
                 <h2 class="text-xl font-semibold text-center text-primary-600">Запросить предметы</h2>
                 <hr>
-                <form method="post" action="{% url 'inventory' %}" class="grid gap-4">
-                    {% csrf_token %}
-                    <input
-                        name="name"
-                        type="text"
-                        placeholder="Предмет"
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
-                        maxlength="256"
-                        required
-                    >
-                    <input
-                        name="quantity"
-                        type="number"
-                        placeholder="Количество"
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
-                        min="1"
-                        step="1"
-                        required
-                    >
-                    <div id="quantityError" class="p-2 bg-red-50 text-red-500 text-sm border border-red-500 rounded hidden">
-                        Количество должно быть натуральным числом!
+                <datalist id="inventoryList">
+                    {% for product in products %}
+                    <option value="{{ product.name }}">
+                        {% if product.state == 'inactive' %}В запасе:
+                        {% elif product.state == 'active' %}Используется:
+                        {% elif product.state == 'broken' %}Сломано:
+                        {% endif %}
+                        {{ product.quantity|default:"1" }}
+                    </option>
+                    {% endfor %}
+                </datalist>
+                {% csrf_token %}
+                <form class="gap-4 grid">
+                    <div id="inventoryFormBody" class="gap-2 grid">
+                        <div name="position" class="p-2 gap-2 grid bg-gray-50 border rounded">
+                            <input
+                                name="name"
+                                list="inventoryList"
+                                type="text"
+                                placeholder="Предмет"
+                                class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                                maxlength="256"
+                                required
+                            >
+                            <input
+                                name="quantity"
+                                type="number"
+                                placeholder="Количество"
+                                class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                                min="1"
+                                step="1"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="bg-red-50 hover:bg-red-100 text-center text-sm text-red-500 border border-red-300 rounded cursor-pointer transition"
+                            >
+                                Удалить
+                            </button>
+                        </div>
+                        <button
+                            id="addButton"
+                            type="button"
+                            class="mx-2 bg-green-50 hover:bg-green-100 text-center text-sm text-green-500 border border-green-300 rounded cursor-pointer transition"
+                        >
+                            Добавить
+                        </button>
                     </div>
                     <button
-                        id="addButton"
                         type="submit"
-                        class="p-2 cursor-pointer bg-primary-600 font-semibold text-white rounded-md hover:bg-primary-700 disabled:bg-gray-400 transition">
+                        class="w-full p-2 bg-primary-600 text-center text-white font-semibold rounded hover:bg-primary-700 transition">
                         Отправить
                     </button>
                 </form>
@@ -208,10 +222,32 @@
 </body>
 
 <script>
+    const inventoryFormBody = document.getElementById("inventoryFormBody");
+    const position = document.getElementsByName("position")[0];
+    const addButton = document.getElementById("addButton");
+
+    addButton.addEventListener("click", event => addPosition());
+
+    function addPosition() {
+        const new_position = position.cloneNode(true);
+        const remove_button = new_position.getElementsByTagName("button")[0];
+
+        remove_button.addEventListener("click", event => removePosition(remove_button))
+
+        inventoryFormBody.appendChild(new_position);
+        inventoryFormBody.appendChild(addButton);
+    }
+
+    function removePosition(button) {
+        button.parentNode.remove();
+    }
+</script>
+
+<script>
     const quantityInputs = document.getElementsByName("quantity");
 
-    for (let i = 0; i <= quantityInputs.length; i++) {
-        const input = quantityInputs[i]
+    for (let i = 0; i < quantityInputs.length; i++) {
+        const input = quantityInputs[i];
 
         input.addEventListener("input", (event) => {
             if (input.validity.rangeUnderflow || input.validity.stepMismatch) {
