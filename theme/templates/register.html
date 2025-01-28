@@ -40,69 +40,115 @@
             </div>
         </nav>
         <!-- Основной контейнер -->
-        <div class="w-full p-10 gap-10 flex justify-center items-start">
+        <div class="w-full p-10 gap-10 flex justify-center items-center">
             <!-- Карточка регистрации -->
             <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
                 <h2 class="text-2xl font-semibold text-center text-primary-600">Регистрация</h2>
                 <hr>
-                <form method="post" class="grid gap-4">
+                <form method="post" class="grid gap-4 justify-center items-center ">
                     {% csrf_token %}
-                    <input 
-                        type="text" 
-                        name="firstName" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Имя"
-                        minlength="1"
-                        maxlength="64"
-                        pattern="^[а-яА-Я ]+$"
-                        required>
-                    <input 
-                        type="text" 
-                        name="lastName" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Фамилия"
-                        minlength="1"
-                        maxlength="64"
-                        pattern="^[а-яА-Я ]+$"
-                        required>
-                    <input 
-                        type="text" 
-                        name="username" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Логин"
-                        minlength="8"
-                        maxlength="32"
-                        pattern="^[a-zA-Z0-9_]+$"
-                        required>
-                    <input 
-                        type="password" 
-                        name="password1" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Пароль"
-                        minlength="8"
-                        maxlength="64"
-                        required>
-                    <input 
-                        type="password" 
-                        name="password2" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Подтвердите пароль"
-                        minlength="8"
-                        maxlength="64"
-                        required>
-                    <!-- Ошибка при неправильных данных TODO настроить вывод ошибки-->
+                
+                    <!-- Общий вывод ошибок формы -->
                     {% if form.non_field_errors %}
                     <div class="p-2 text-red-500 bg-red-50 border border-red-500 rounded">
-                        <p>Введены неверные данные!</p>
-                        {{ form.non_field_errors }}
+                        <p>Ошибка!</p>
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                     {% endif %}
+                
+                    <div>
+                        <input 
+                            type="text" 
+                            name="first_name" 
+                            class="p-2 w-full text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Имя"
+                            minlength="1"
+                            maxlength="64"
+                            pattern="^[а-яА-Я ]+$"
+                            required>
+                        {% if form.firstName.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.firstName.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="text" 
+                            name="last_name" 
+                            class="p-2 w-full text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Фамилия"
+                            minlength="1"
+                            maxlength="64"
+                            pattern="^[а-яА-Я ]+$"
+                            required>
+                        {% if form.lastName.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.lastName.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            class="p-2 w-full text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Логин"
+                            minlength="8"
+                            maxlength="32"
+                            pattern="^[a-zA-Z0-9_]+$"
+                            required>
+                        {% if form.username.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.username.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="password" 
+                            name="password1" 
+                            class="p-2 w-full text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Пароль"
+                            minlength="8"
+                            maxlength="64"
+                            required>
+                        {% if form.password1.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.password1.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="password" 
+                            name="password2" 
+                            class="p-2 w-full text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+                            placeholder="Подтвердите пароль"
+                            minlength="8"
+                            maxlength="64"
+                            required>
+                        {% if form.password2.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.password2.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                    </div>
+                
                     <button 
                         type="submit" 
                         class="p-2 bg-primary-600 text-center text-white font-semibold rounded hover:bg-primary-700 transition">
                         Отправить
                     </button>
-                </form>
+                </form>                
                 <p class="text-center text-gray-400">
                     Уже зарегистрированы?
                     <a href="{% url 'login' %}" title="Вход" class="text-primary-500 hover:text-primary-800 transition">Войти</a>.
