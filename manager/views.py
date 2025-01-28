@@ -10,17 +10,6 @@ from django.db.models import Count, F, Q
 
 from .utils import usage_report, db_report
 
-def usage_report_view(request):
-    # Получаем данные отчётов
-    user_report = usage_report()
-    db_stats = db_report()
-    context = {
-        'user_report': user_report,
-        'db_stats': db_stats,
-    }
-
-    # user_report и db_stats будут доступны в шаблоне как переменные
-    return render(request, 'report.html', context)
 
 def verified_check(view_func):
     @wraps(view_func)
@@ -43,7 +32,12 @@ def error_404_view(request, exception=None):
 @login_required
 @user_passes_test(is_admin)
 def admin_panel(request):
-    return render(request, 'admin_panel.html', {})
+    context = {
+        "products": Product.objects.filter(),
+        "users": User.objects.filter()
+    }
+
+    return render(request, 'admin_panel.html', context)
 
 
 @login_required
@@ -113,3 +107,28 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'register.html', {'form': form})
+
+
+@user_passes_test(is_admin)
+def usage_report_view(request):
+    # Получаем данные отчётов
+    user_report = usage_report()
+    db_stats = db_report()
+    context = {
+        'user_report': user_report,
+        'db_stats': db_stats,
+        'users': User.objects.filter()
+    }
+
+    # user_report и db_stats будут доступны в шаблоне как переменные
+    return render(request, 'reports.html', context)
+
+
+@login_required
+@user_passes_test(is_admin)
+def storage(request):
+    context = {
+        'products': Product.objects.filter()
+    }
+
+    return render(request, 'storage.html', context)

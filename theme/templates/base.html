@@ -1,0 +1,93 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body class="bg-gray-100">
+    <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
+        <!-- Панель навигации -->
+        <nav class="w-full flex justify-between items-center bg-white shadow-lg">
+            <div class="h-full p-4 flex items-center">
+                <h1 class="text-2xl">Спортивный инвентарь</h1>
+            </div>
+            <div class="h-full p-2 gap-x-2 flex justify-between items-center">
+                {% if user.is_staff %}
+                <a
+                    id="admin_panel"
+                    href="{% url 'admin_panel' %}"
+                    title="Админ-панель"
+                    class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Админ-панель
+                </a>
+                <a
+                    id="reports"
+                    href="{% url 'reports' %}"
+                    title="Отчёты"
+                    class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Отчёты
+                </a>
+                <a
+                    id="storage"
+                    href="{% url 'storage' %}"
+                    title="Склад"
+                    class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Склад
+                </a>
+                {% endif %}
+                <a
+                    id="inventory"
+                    href="{% url 'inventory' %}"
+                    title="Инвентарь"
+                    class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Инвентарь
+                </a>
+                <a
+                    id="help"
+                    href="{% url 'help' %}"
+                    title="Справка"
+                    class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
+                    Справка
+                </a>
+                {% if user.is_authenticated %}
+                <a
+                    href="{% url 'profile' %}"
+                    title="Профиль"
+                    class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition"
+                    style="width: 50px; height: 50px;">
+                    {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
+                </a>
+                {% else %}
+                <a
+                    href="{% url 'profile' %}"
+                    title="Вы не авторизованы"
+                    class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition"
+                    style="width: 50px; height: 50px;">
+                    ??
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Основной контейнер -->
+        <div class="w-full p-10 gap-10 flex justify-center items-start">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+
+{% block datalists %}{% endblock %}
+<script>
+    const path = window.location.pathname;
+    const page = path.slice(1, -1);
+    const activeButton = document.getElementById(page);
+
+    activeButton.classList.add("bg-gray-100");
+</script>
+{% block scripts %}{% endblock %}
+
+</html>

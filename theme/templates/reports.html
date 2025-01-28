@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Отчёты{% endblock %}
+{% block content %}
+<!-- Секция с таблицей -->
+<div class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Использование</h2>
+    <hr>
+    <table class="border border-gray-300 border-collapse">
+        <thead>
+            <tr class="bg-gray-50 border border-gray-300">
+                <th class="p-2 text-center">#</th>
+                <th class="p-2 text-start">Логин</th>
+                <th class="p-2 text-start">Имя, фамилия</th>
+                <th class="p-2 text-start">Количество</th>
+            </tr>
+        </thead>
+        <tbody id="inventoryTableBody">
+            {% for report in user_report %}
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <th class="p-2 text-center">{{ forloop.counter }}</th>
+                <td class="p-2 text-start break-all">{{ report.username }}</td>
+                <td class="p-2 text-start">{{ report.first_name }} {{ report.last_name }}</td>
+                <td class="p-2">{{ report.active_count }}</td>
+            </tr>
+            {% empty %}
+            <tr class="border-y border-gray-300">
+                <td colspan="4" class="py-2 text-center text-gray-400 transition">Инвентарь пока не используется.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

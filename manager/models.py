@@ -4,6 +4,7 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
+
 # Кастомная модель User
 class User(AbstractUser):
     # Остальные поля уже есть в AbstractUser
@@ -30,6 +31,7 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} x{self.quantity} ({self.get_state_display()})"
 
+
 # Пользователь создаёт запрос. После одобрения все изменения вносятся в базу и запись удаляется
 class Application(models.Model):
     ACTIONS = [
@@ -38,7 +40,7 @@ class Application(models.Model):
         ('request', 'Запросить оборудование')
     ]
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications') # Автор заявки
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')  # Автор заявки
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     '''if action == "request":
@@ -59,4 +61,3 @@ class Purchase(models.Model):
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     state = models.CharField(max_length=20, choices=STATES, default='none')
-

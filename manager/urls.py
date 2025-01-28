@@ -15,10 +15,12 @@ urlpatterns = [
     path('help/', views.help, name="help"),
     path('inventory/', views.inventory, name="inventory"),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
-    path('profile/', views.profile, name="profile"),
-    path('register/', views.register, name="register"),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('not_verified/', views.not_verified, name='not_verified'),
+    path('profile/', views.profile, name="profile"),
+    path('register/', views.register, name="register"),
+    path('reports/', views.usage_report_view, name="reports"),
+    path('storage/', views.storage, name="storage")
 ]
 
 # Указываем кастомный обработчик 404
