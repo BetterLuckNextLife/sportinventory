@@ -4,7 +4,6 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
-
 # Кастомная модель User
 class User(AbstractUser):
     # Остальные поля уже есть в AbstractUser

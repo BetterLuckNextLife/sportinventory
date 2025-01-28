@@ -1,12 +1,26 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from .models import *
 from .forms import UserRegistrationForm
 from .models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from functools import wraps
+from django.db.models import Count, F, Q
 
+from .utils import usage_report, db_report
+
+def usage_report_view(request):
+    # Получаем данные отчётов
+    user_report = usage_report()
+    db_stats = db_report()
+    context = {
+        'user_report': user_report,
+        'db_stats': db_stats,
+    }
+
+    # user_report и db_stats будут доступны в шаблоне как переменные
+    return render(request, 'report.html', context)
 
 def verified_check(view_func):
     @wraps(view_func)
