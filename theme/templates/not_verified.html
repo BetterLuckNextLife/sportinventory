@@ -1,55 +1,18 @@
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% tailwind_css %}
-    <title>Предупреждение</title>
-</head>
-
-<body class="bg-gray-100">
-    <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
-        <!-- Панель навигации -->
-        <nav class="w-full flex justify-between items-center bg-white shadow-lg">
-            <div class="h-full p-4 flex items-center">
-                <h1 class="text-2xl">Спортивный инвентарь</h1>
-            </div>
-            <div class="h-full p-2 gap-x-2 flex justify-between items-center">
-                <a href="{% url 'inventory' %}" title="Инвентарь" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                    Инвентарь
-                </a>
-                <a href="{% url 'help' %}" title="Справка" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                    Справка
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" title="Профиль" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
-                    {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                </a>
-                {% else %}
-                <a href="{% url 'profile' %}" title="Вы не авторизованы" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
-                    ??
-                </a>
-                {% endif %}
-            </div>
-        </nav>
-        <!-- Основной контейнер -->
-        <div class="w-full p-10 gap-10 flex justify-center items-start">
-            <div class="gap-4 grid">
-                <h1 class="p-2 text-primary-500 text-center text-9xl font-bold">!</h1>
-                <p class="text-center font-semibold text-4xl">Ваш аккаунт не подтверждён</p>
-                <p class="text-xl text-center">
-                    Ожидайте ответа администрации.
-                </p>
-                <div class="flex justify-center items-center">
-                    <a href="{% url 'login' %}" class="w-1/4 p-2 bg-primary-600 text-center text-white font-semibold rounded hover:bg-primary-700 transition">
-                        Главная
-                    </a>
-                </div>
-            </div>
-        </div>
+{% extends "base.html" %}
+{% block title %}Предупреждение{% endblock %}
+{% block content %}
+<div class="gap-4 grid">
+    <h1 class="p-2 text-primary-500 text-center text-9xl font-bold">!</h1>
+    <p class="text-center font-semibold text-4xl">Ваш аккаунт не подтверждён</p>
+    <p class="text-xl text-center">
+        Ожидайте ответа администрации.
+    </p>
+    <div class="flex justify-center items-center">
+        <a
+            href="{% url 'login' %}"
+            class="w-1/4 p-2 bg-primary-600 hover:bg-primary-700 text-center text-white font-semibold rounded shadow-md transition">
+            Главная
+        </a>
     </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

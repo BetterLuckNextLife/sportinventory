@@ -1,8 +1,6 @@
 .env
-__pycache__/
+**/__pycache__/
+*.pyc
 venv/
 .idea/
-
-# Временно
-db.sqlite3
-sportinventory/settings.py
+debug.log

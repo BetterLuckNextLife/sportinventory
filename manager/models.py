@@ -61,4 +61,3 @@ class Purchase(models.Model):
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     state = models.CharField(max_length=20, choices=STATES, default='none')
-

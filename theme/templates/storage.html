@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Склад{% endblock %}
+{% block content %}
+<!-- Секция с таблицей -->
+<div class="w-full p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Весь инвентарь</h2>
+    <hr>
+    <table class="border border-gray-300 border-collapse">
+        <thead>
+            <tr class="bg-gray-50 border border-gray-300">
+                <th class="p-2 text-center">#</th>
+                <th class="p-2 text-start">Пользователь</th>
+                <th class="p-2 text-start">Предмет</th>
+                <th class="p-2 text-start">Количество</th>
+                <th class="p-2 text-start">Состояние</th>
+                <th class="p-2 text-center">💾</th>
+            </tr>
+        </thead>
+        <tbody id="inventoryTableBody">
+            {% for product in products %}
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <th class="p-2 text-center">{{ forloop.counter }}</th>
+                <td class="p-2 text-start break-all">{{ product.owner }}</td>
+                <td class="p-2 text-start break-all">{{ product.name }}</td>
+                <td class="p-2 text-start">{{ product.quantity|default:"1" }}</td>
+                <td class="p-2">
+                    {% if product.state == 'inactive' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option selected value="inactive">В запасе</option>
+                        <option value="active">Используется</option>
+                        <option value="broken">Сломано</option>
+                    </select>
+                    {% elif product.state == 'active' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option value="inactive">В запасе</option>
+                        <option selected value="active">Используется</option>
+                        <option value="broken">Сломано</option>
+                    </select>
+                    {% elif product.state == 'broken' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option value="inactive">В запасе</option>
+                        <option value="active">Используется</option>
+                        <option selected value="broken">Сломано</option>
+                    </select>
+                    {% endif %}
+                </td>
+                <td class="p-2">
+                    <button type="submit" title="Сохранить" class="w-full cursor-pointer bg-primary-500 hover:bg-primary-700 text-center text-white rounded transition">
+                        ✓
+                    </button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="border-y border-gray-300">
+                <td colspan="4" class="py-2 text-center text-gray-400 transition">У вас пока нет инвентаря.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,97 +1,136 @@
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% tailwind_css %}
-</head>
-
-<body class="bg-gray-100">
-    <div class="h-screen grid bg-gray-100" style="grid-template-rows: 1fr 9fr;">
-        <!-- Панель навигации -->
-        <nav class="w-full flex justify-between items-center bg-white shadow-lg">
-            <div class="h-full p-4 flex items-center">
-                <h1 class="text-2xl">Спортивный инвентарь</h1>
-            </div>
-            <div class="h-full p-2 gap-x-2 flex justify-between items-center">
-                <a href="{% url 'inventory' %}" title="Инвентарь" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                    Инвентарь
-                </a>
-                <a href="{% url 'help' %}" title="Справка" class="p-2 flex items-center text-lg rounded-lg hover:text-primary-700 hover:bg-gray-100 transition">
-                    Справка
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" title="Профиль" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
-                    {{ user.first_name|slice:'0:1' }}{{ user.last_name|slice:'0:1' }}
-                </a>
-                {% else %}
-                <a href="{% url 'profile' %}" title="Вы не авторизованы" class="flex justify-center items-center bg-primary-500 text-center text-xl text-white rounded-full hover:bg-primary-700 transition" style="width: 50px; height: 50px;">
-                    ??
-                </a>
-                {% endif %}
-            </div>
-        </nav>
-        <!-- Основной контейнер -->
-        <div class="w-full p-10 gap-10 flex justify-center items-start">
-            <!-- Карточка регистрации -->
-            <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-                <h2 class="text-2xl font-semibold text-center text-primary-600">Регистрация</h2>
-                <hr>
-                <form method="post" class="grid gap-4">
-                    {% csrf_token %}
-                    <input 
-                        type="text" 
-                        name="first_name" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Имя"
-                        required>
-                    <input 
-                        type="text" 
-                        name="last_name" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Фамилия"
-                        required>
-                    <input 
-                        type="text" 
-                        name="username" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Логин"
-                        required>
-                    <input 
-                        type="password" 
-                        name="password1" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Пароль"
-                        required>
-                    <input 
-                        type="password" 
-                        name="password2" 
-                        class="p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
-                        placeholder="Подтвердите пароль"
-                        required>
-                    <!-- Ошибка при неправильных данных TODO настроить вывод ошибки-->
-                    {% if form.non_field_errors %}
-                    <div class="p-2 text-red-500 bg-red-50 border border-red-500 rounded">
-                        <p>Введены неверные данные!</p>
-                        {{ form.non_field_errors }}
-                    </div>
-                    {% endif %}
-                    <button 
-                        type="submit" 
-                        class="p-2 bg-primary-600 text-center text-white font-semibold rounded hover:bg-primary-700 transition">
-                        Отправить
-                    </button>
-                </form>
-                <p class="text-center text-gray-400">
-                    Уже зарегистрированы?
-                    <a href="{% url 'login' %}" title="Вход" class="text-primary-500 hover:text-primary-800 transition">Войти</a>.
-                </p>
-            </div>
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+<!-- Карточка регистрации -->
+<div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-2xl font-semibold text-center text-primary-600">Регистрация</h2>
+    <hr>
+    <form method="post" class="grid gap-4">
+        {% csrf_token %}
+        <!-- Общий вывод ошибок формы -->
+        {% if form.non_field_errors %}
+        <div class="p-2 text-red-500 bg-red-50 border border-red-500 rounded">
+            <p>Ошибка!</p>
+            <ul>
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
         </div>
-    </div>
-</body>
+        {% endif %}
+        <input 
+            type="text" 
+            name="first_name" 
+            class="w-full p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+            placeholder="Имя"
+            minlength="1"
+            maxlength="64"
+            pattern="^[а-яА-Я ]+$"
+            required>
+        {% if form.firstName.errors %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form.firstName.errors|join:", " }}
+        </div>
+        {% endif %}
+        <input 
+            type="text" 
+            name="last_name" 
+            class="w-full p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+            placeholder="Фамилия"
+            minlength="1"
+            maxlength="64"
+            pattern="^[а-яА-Я ]+$"
+            required>
+        {% if form.lastName.errors %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form.lastName.errors|join:", " }}
+        </div>
+        {% endif %}
+        <input 
+            type="text" 
+            name="username" 
+            class="w-full p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+            placeholder="Логин"
+            minlength="8"
+            maxlength="32"
+            pattern="^[a-zA-Z0-9_]+$"
+            required>
+        {% if form.username.errors %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form.username.errors|join:", " }}
+        </div>
+        {% endif %}
+        <input 
+            type="password" 
+            name="password1" 
+            class="w-full p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+            placeholder="Пароль"
+            minlength="8"
+            maxlength="64"
+            required>
+        {% if form.password1.errors %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form.password1.errors|join:", " }}
+        </div>
+        {% endif %}
+        <input 
+            type="password" 
+            name="password2" 
+            class="w-full p-2 text-gray-800 placeholder-gray-400 bg-gray-100 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" 
+            placeholder="Подтвердите пароль"
+            minlength="8"
+            maxlength="64"
+            required>
+        {% if form.password2.errors %}
+        <div class="text-red-500 text-sm mt-1">
+            {{ form.password2.errors|join:", " }}
+        </div>
+        {% endif %}
+    
+        <button 
+            type="submit" 
+            class="w-full p-2 bg-primary-600 hover:bg-primary-700 text-center text-white font-semibold rounded shadow-md transition">
+            Отправить
+        </button>
+    </form>
+    <p class="text-center text-gray-400">
+        Уже зарегистрированы?
+        <a href="{% url 'login' %}" title="Вход" class="text-primary-500 hover:text-primary-800 transition">Войти</a>.
+    </p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const firstName = document.getElementsByName("firstName")[0];
+    const lastName = document.getElementsByName("lastName")[0];
+    const username = document.getElementsByName("username")[0];
+    const password1 = document.getElementsByName("password1")[0];
+    const password2 = document.getElementsByName("password2")[0];
 
-</html>
+    firstName.addEventListener("input", (event) => {
+        if (firstName.value.patternMismatch) {
+            firstName.setCustomValidity("Введите имя на русском языке!");
+        }
+    });
+
+    lastName.addEventListener("input", (event) => {
+        if (lastName.value.patternMismatch) {
+            lastName.setCustomValidity("Введите фамилию на русском языке!");
+        }
+    });
+
+    username.addEventListener("input", (event) => {
+        if (username.validity.tooShort) {
+            // username.setCustomValidity(`Минимальная длина логина: ${username.minLength} сим.; вы ввели: ${username.value.length} сим.`);
+        }
+        console.log(username.value)
+    });
+
+    password1.addEventListener("input", (event) => {
+        if (password1.validity.tooShort) {
+            // password1.setCustomValidity(`Минимальная длина пароля: ${password1.minLength} сим.; вы ввели: ${password1.value.length} сим.`);
+        }
+    });
+
+</script>
+{% endblock %}
