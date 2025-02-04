@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from .models import *
 from .forms import UserRegistrationForm
-from .models import Product
+from .models import Product, Application
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from functools import wraps
+from django.db.models import Count, F, Q
+
+from .utils import usage_report, db_report
+
 
 def verified_check(view_func):
     @wraps(view_func)
@@ -13,10 +17,13 @@ def verified_check(view_func):
         if request.user.verified:
             return view_func(request, *args, **kwargs)
         return redirect('not_verified')  # Правильный редирект по URL name или путь
+
     return wrapper
+
 
 def is_admin(user):
     return user.is_staff == True
+
 
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
@@ -25,7 +32,12 @@ def error_404_view(request, exception=None):
 @login_required
 @user_passes_test(is_admin)
 def admin_panel(request):
-    return render(request, 'admin_panel.html', {})
+    context = {
+        "products": Product.objects.filter(),
+        "users": User.objects.filter()
+    }
+
+    return render(request, 'admin_panel.html', context)
 
 
 @login_required
@@ -41,10 +53,18 @@ def help(request):
 @login_required
 @verified_check
 def inventory(request):
+    '''
+    ACTIONS = [
+        ('None', 'None'),
+        ('drop', 'Списать оборудование'),
+        ('request', 'Запросить оборудование')
+    ]
+    '''
     if request.method == "POST":
+        # Получаем от пользователя имя, кол-во нужного Product и action(Удалить, добавить)
         name = request.POST.get('name')
         quantity = request.POST.get('quantity')
-        state = request.POST.get('state')
+        action = request.POST.get('action')
 
         # Проверка количества
         try:
@@ -55,16 +75,13 @@ def inventory(request):
             messages.error(request, "Некорректное количество! Введите положительное число.")
             return redirect('inventory')
 
-        # Проверяем существующий продукт
-        existing_product = Product.objects.filter(name=name, state=state, owner=request.user).first()
-
-        if existing_product:
-            existing_product.quantity += quantity
-            existing_product.save()
+        # Заявка отправляется в бд. В панели админа отображаются все заявки и одобряются или отклоняются
+        existing_app = Application.objects.filter(name=name, quantity=quantity, action=action, owner=request.user).first()
+        if existing_app:
+            messages.success(request, "Ваша заявка уже на рассмотрении.")
         else:
-            Product.objects.create(name=name, quantity=quantity, state=state, owner=request.user)
-
-        messages.success(request, "Элемент успешно добавлен в инвентарь.")
+            Application.objects.create(name=name, quantity=quantity, action=action, owner=request.user)
+            messages.success(request, "Ваша заявка будет рассмотрена.")
         return redirect('inventory')
 
     # Получаем продукты пользователя
@@ -75,8 +92,10 @@ def inventory(request):
 def login(request):
     return render(request, 'login.html', {})
 
+
 def not_verified(request):
     return render(request, 'not_verified.html', {})
+
 
 @login_required
 def profile(request):
@@ -95,3 +114,26 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
+@user_passes_test(is_admin)
+def usage_report_view(request):
+    # Получаем данные отчётов
+    user_report = usage_report()
+    db_stats = db_report()
+    context = {
+        'user_report': user_report,
+        'db_stats': db_stats,
+        'users': User.objects.filter()
+    }
+
+    # user_report и db_stats будут доступны в шаблоне как переменные
+    return render(request, 'reports.html', context)
+
+
+@login_required
+@user_passes_test(is_admin)
+def storage(request):
+    context = {
+        'products': Product.objects.filter()
+    }
+
+    return render(request, 'storage.html', context)
