@@ -35,7 +35,6 @@ class Product(models.Model):
 # Пользователь создаёт запрос. После одобрения все изменения вносятся в базу и запись удаляется
 class Application(models.Model):
     ACTIONS = [
-        ('None', 'None'),
         ('drop', 'Списать оборудование'),
         ('request', 'Запросить оборудование')
     ]
@@ -46,13 +45,12 @@ class Application(models.Model):
     '''if action == "request":
             ...
     На запрос выделяем quantity вещей. Если у storage нет такого количества, то закупаем через Purchase'''
-    action = models.CharField(max_length=32, choices=ACTIONS, default='None')
+    action = models.CharField(max_length=32, choices=ACTIONS, default='drop')
 
 
 class Purchase(models.Model):
     # owner = storage
     STATES = [
-        ('none', 'None'),
         ('bought', 'Куплено'),
         ('delivered', 'Доставлено')
     ]
@@ -60,4 +58,4 @@ class Purchase(models.Model):
 
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
-    state = models.CharField(max_length=20, choices=STATES, default='none')
+    state = models.CharField(max_length=20, choices=STATES, default='bought')

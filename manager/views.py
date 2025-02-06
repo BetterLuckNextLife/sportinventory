@@ -34,7 +34,8 @@ def error_404_view(request, exception=None):
 def admin_panel(request):
     context = {
         "products": Product.objects.filter(),
-        "users": User.objects.filter()
+        "users": User.objects.filter(),
+        "apps": Application.objects.filter()
     }
 
     return render(request, 'admin_panel.html', context)
@@ -55,7 +56,6 @@ def help(request):
 def inventory(request):
     '''
     ACTIONS = [
-        ('None', 'None'),
         ('drop', 'Списать оборудование'),
         ('request', 'Запросить оборудование')
     ]
