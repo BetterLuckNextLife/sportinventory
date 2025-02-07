@@ -39,10 +39,16 @@ class Application(models.Model):
         ('drop', 'Списать оборудование'),
         ('request', 'Запросить оборудование')
     ]
+    STATE_CHOICES = [
+        ('active', 'Используется'),
+        ('inactive', 'В запасе'),
+        ('broken', 'Сломан'),
+    ]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')  # Автор заявки
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
+    state = models.CharField(max_length=8, choices=STATE_CHOICES, default='inactive')
     '''if action == "request":
             ...
     На запрос выделяем quantity вещей. Если у storage нет такого количества, то закупаем через Purchase'''

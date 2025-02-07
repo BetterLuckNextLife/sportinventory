@@ -48,6 +48,7 @@ def admin_panel(request):
                 prod = Product.objects.filter(
                     name=app.name,
                     owner=app.owner,
+                    state=app.state
                 ).first()
                 if app.action == 'drop':
                     prod.quantity -= app.quantity
@@ -100,6 +101,7 @@ def inventory(request):
         name = request.POST.getlist('name')
         quantity = list(map(int, request.POST.getlist('quantity')))
         action = request.POST.getlist('action')
+        state = request.POST.getlist('state')
 
         try:
             for q in quantity:
@@ -114,6 +116,7 @@ def inventory(request):
                 name=name[i], 
                 quantity=quantity[i], 
                 action=action[i], 
+                state=state[i],
                 owner=request.user
             ).first()
             if not existing_app:
@@ -121,6 +124,7 @@ def inventory(request):
                     name=name[i], 
                     quantity=quantity[i], 
                     action=action[i], 
+                    state=state[i],
                     owner=request.user
                 )
                 messages.success(request, "Ваша заявка будет рассмотрена.")
