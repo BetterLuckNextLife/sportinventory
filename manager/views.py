@@ -32,13 +32,19 @@ def error_404_view(request, exception=None):
 @login_required
 @user_passes_test(is_admin)
 def admin_panel(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        verifinguser = User.objects.filter(username=username).first()
+        verifinguser.verified = True
+        verifinguser.save()
     context = {
         "products": Product.objects.filter(),
         "users": User.objects.filter(),
-        "apps": Application.objects.filter()
+        "applications": Application.objects.filter()
     }
-
+    
     return render(request, 'admin_panel.html', context)
+    
 
 
 @login_required

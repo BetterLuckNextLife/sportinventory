@@ -5,36 +5,18 @@
 <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
     <h2 class="text-2xl font-semibold text-center text-primary-600">Заявки на выдачу</h2>
     <hr>
+    {% for application in applications %}
     <div class="w-full border">
-        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('1')">
-            Заявка от login1
+        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('{{ forloop.counter }}')">
+            {{ application.owner }}
         </button>
-        <div id="1" class="hidden px-4 p-2 gap-2 flex border-t">
-            <p class="text-primary-700 font-medium">5</p>
+        <div id="{{ forloop.counter }}" class="hidden px-4 p-2 gap-2 flex border-t">
+            <p class="text-primary-700 font-medium">{{ application.quantity }}</p>
             <p>•</p>
-            <p>Фигня</p>
+            <p>{{ application.name }}</p>
         </div>
     </div>
-    <div class="w-full border">
-        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('2')">
-            Заявка от login2
-        </button>
-        <div id="2" class="hidden px-4 p-2 gap-2 flex border-t">
-            <p class="text-primary-700 font-medium">625</p>
-            <p>•</p>
-            <p>Хрень</p>
-        </div>
-    </div>
-    <div class="w-full border">
-        <button class="w-full px-4 py-2 text-left font-medium bg-gray-50 hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('3')">
-            Заявка от EgorRy
-        </button>
-        <div id="3" class="hidden px-4 p-2 gap-2 flex border-t">
-            <p class="text-primary-700 font-medium">1048576</p>
-            <p>•</p>
-            <p>Ясно ☼</p>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 <!-- Карточка выдачи инвентаря -->
 <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
@@ -111,16 +93,24 @@
                 <td class="p-2 text-start break-words">
                     {{ user.first_name }} {{ user.last_name }}
                 </td>
-                <td class="p-2 text-start break-all">
+                <td class="p-2 text-start break-words">
                     {{ user.username }}
                 </td>
-                <td class="p-2 flex justify-center items-center">
-                    <button
-                        id="verifyButton"
-                        title="Одобрить регистрацию"
-                        class="px-1 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
-                        ✓
-                    </button> 
+                <td class="p-2 text-start break-words">
+                    <form method="post">
+                        {% csrf_token %}
+                            <button
+                                id="verifyButton"
+                                title="Одобрить регистрацию"
+                                class="px-1 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
+                                ✓
+                            </button> 
+                            <input 
+                            type="hidden"
+                            name="username"
+                            value="{{ user.username }}"
+                            >
+                    </form>
                 </td>
             </tr>
             {% endif %}
