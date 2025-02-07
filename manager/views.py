@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import UserRegistrationForm
-from .models import Product, Application
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -38,8 +37,35 @@ def admin_panel(request):
             verifinguser = User.objects.filter(username=username).first()
             verifinguser.verified = True
             verifinguser.save()
-        else:
-            ...
+        elif "status" in request.POST:
+            action = request.POST.get("status")
+            identificator = int(request.POST.get("ident"))
+
+            app = Application.objects.filter(ident=identificator).first()
+            if action == "reject":
+                app.delete()
+            elif action == "accept":
+                prod = Product.objects.filter(
+                    name=app.name,
+                    owner=app.owner,
+                ).first()
+                if app.action == 'drop':
+                    prod.quantity -= app.quantity
+                elif app.action == 'request':
+                    storage = Product.objects.filter(owner="storage", name=app.name).first()
+                    if app.quantity <= storage.quantity:
+                        storage.quantity -= app.quantity
+                        prod.quantity += app.quantity
+                    else:
+                        Purchase.objects.create(
+                            name=app.name, 
+                            quantity=app.quantity-storage.quantity
+                        )
+                        storage.quantity = 0
+                    storage.save()
+                prod.save()
+                app.delete()
+
     context = {
         "products": Product.objects.filter(),
         "users": User.objects.filter(),
