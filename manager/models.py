@@ -34,6 +34,7 @@ class Product(models.Model):
 
 # Пользователь создаёт запрос. После одобрения все изменения вносятся в базу и запись удаляется
 class Application(models.Model):
+    ident = models.AutoField(primary_key=True)
     ACTIONS = [
         ('drop', 'Списать оборудование'),
         ('request', 'Запросить оборудование')

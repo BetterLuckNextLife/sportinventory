@@ -18,19 +18,25 @@
                 <td>
                     <form method="post">
                         {% csrf_token %}
-                        <div class="gap-2 flex">
+                        <div class="gap-2 flex justify-end">
                             <button
-                                id="discardButton"
-                                title="Отклонить заявку"
+                                name="status"
+                                title="accept"
                                 class="w-6 h-6 bg-red-500 hover:bg-red-700 text-white rounded shadow-md transition">
                                 ✕
                             </button>
                             <button
-                                id="verifyButton"
+                                name="status"
+                                value="reject"
                                 title="Одобрить заявку"
                                 class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
                                 ✓
                             </button>
+                            <input
+                            class="hidden"
+                            name = ident'
+                            value="{{ application.ident }}"
+                            >
                         </div>
                     </form>
                 </td>
