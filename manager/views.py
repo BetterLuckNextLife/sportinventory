@@ -33,8 +33,8 @@ def error_404_view(request, exception=None):
 @user_passes_test(is_admin)
 def admin_panel(request):
     if request.method == "POST":
-        if "verifingusername" in request.POST:
-            username = request.POST.get('verifingusername')
+        if "username" in request.POST:
+            username = request.POST.get('username')
             verifinguser = User.objects.filter(username=username).first()
             verifinguser.verified = True
             verifinguser.save()
