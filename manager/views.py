@@ -63,26 +63,35 @@ def inventory(request):
     if request.method == "POST":
         # Получаем от пользователя имя, кол-во нужного Product и action(Удалить, добавить)
         name = request.POST.getlist('name')
-        quantity = request.POST.getlist('quantity')
+        quantity = list(map(int, request.POST.getlist('quantity')))
         action = request.POST.getlist('action')
-        print(name, quantity, action)
 
-        # Проверка количества
         try:
-            quantity = int(quantity)
-            if quantity <= 0:
-                raise ValueError("Количество должно быть положительным числом.")
+            for q in quantity:
+                if q <= 0:
+                    raise ValueError("Количество должно быть положительным числом.")
         except (ValueError, TypeError):
             messages.error(request, "Некорректное количество! Введите положительное число.")
-            return redirect('inventory')
 
         # Заявка отправляется в бд. В панели админа отображаются все заявки и одобряются или отклоняются
-        existing_app = Application.objects.filter(name=name, quantity=quantity, action=action, owner=request.user).first()
-        if existing_app:
-            messages.success(request, "Ваша заявка уже на рассмотрении.")
-        else:
-            Application.objects.create(name=name, quantity=quantity, action=action, owner=request.user)
-            messages.success(request, "Ваша заявка будет рассмотрена.")
+        for i in range(len(name)):
+            existing_app = Application.objects.filter(
+                name=name[i], 
+                quantity=quantity[i], 
+                action=action[i], 
+                owner=request.user
+            ).first()
+            if not existing_app:
+                Application.objects.create(
+                    name=name[i], 
+                    quantity=quantity[i], 
+                    action=action[i], 
+                    owner=request.user
+                )
+                messages.success(request, "Ваша заявка будет рассмотрена.")
+            else:
+                ...
+
         return redirect('inventory')
 
     # Получаем продукты пользователя
