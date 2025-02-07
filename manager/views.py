@@ -62,9 +62,10 @@ def inventory(request):
     '''
     if request.method == "POST":
         # Получаем от пользователя имя, кол-во нужного Product и action(Удалить, добавить)
-        name = request.POST.get('name')
-        quantity = request.POST.get('quantity')
-        action = request.POST.get('action')
+        name = request.POST.getlist('name')
+        quantity = request.POST.getlist('quantity')
+        action = request.POST.getlist('action')
+        print(name, quantity, action)
 
         # Проверка количества
         try:

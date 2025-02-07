@@ -45,7 +45,7 @@ class Application(models.Model):
     '''if action == "request":
             ...
     На запрос выделяем quantity вещей. Если у storage нет такого количества, то закупаем через Purchase'''
-    action = models.CharField(max_length=32, choices=ACTIONS, default='drop')
+    action = models.CharField(max_length=32, choices=ACTIONS, default='drop', null=True, blank=True)
 
 
 class Purchase(models.Model):
