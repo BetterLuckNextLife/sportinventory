@@ -18,6 +18,8 @@
         </thead>
         <tbody id="inventoryTableBody">
             {% for product in products %}
+            <form method="post">
+            {% csrf_token %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <th class="p-2 text-center">{{ forloop.counter }}</th>
                 <td class="p-2 text-start break-all">{{ product.owner }}</td>
@@ -44,11 +46,20 @@
                     </select>
                     {% endif %}
                 </td>
+                <input
+                type="hidden"
+                name="productname"
+                value="{{ product.name }}">
+                <input
+                type="hidden"
+                name="username"
+                value="{{ product.owner.id }}">
                 <td class="p-2">
                     <button type="submit" title="Сохранить" class="w-full cursor-pointer bg-primary-500 hover:bg-primary-700 text-center text-white rounded transition">
                         ✓
                     </button>
                 </td>
+                </form>
             </tr>
             {% empty %}
             <tr class="border-y border-gray-300">

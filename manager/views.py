@@ -181,6 +181,14 @@ def usage_report_view(request):
 @login_required
 @user_passes_test(is_admin)
 def storage(request):
+    if request.method == "POST":
+        user = User.objects.filter(id=request.POST.get("username")).first()
+        productname = request.POST.get("productname")
+        state = request.POST.get("state")
+        changingproduct = Product.objects.filter(owner=user, name=productname).first()
+        changingproduct.state = state
+        changingproduct.save()
+        
     context = {
         'products': Product.objects.filter()
     }

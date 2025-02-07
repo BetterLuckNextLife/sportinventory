@@ -50,7 +50,7 @@
     <h2 class="text-2xl font-semibold text-center text-primary-600">Выдать инвентарь</h2>
     <hr>
     {% csrf_token %}
-    <form class="gap-4 grid">
+    <form method="post" "gap-4 grid">
         <input
             name="username"
             list="usersList"
