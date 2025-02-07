@@ -42,8 +42,8 @@
                     </select>
                     {% endif %}
                 </td>
-                <td class="p-2">
-                    <button type="submit" title="Сохранить" class="w-full cursor-pointer bg-primary-500 hover:bg-primary-700 text-center text-white rounded transition">
+                <td class="p-2 flex justify-center">
+                    <button type="submit" title="Сохранить" class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
                         ✓
                     </button>
                 </td>
@@ -84,12 +84,14 @@
                     required
                 >
                 <select
-                name = "action">
-                    <option value="drop">
-                        Убрать
-                    </option>
+                    name="action"
+                    class="px-1 bg-gray-50 text-sm border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                >
                     <option value="request">
                         Запросить
+                    </option>
+                    <option value="drop">
+                        Убрать
                     </option>
                 </select>
                 <button
