@@ -42,6 +42,7 @@ def admin_panel(request):
             identificator = int(request.POST.get("ident"))
 
             app = Application.objects.filter(ident=identificator).first()
+
             if action == "reject":
                 app.delete()
             elif action == "accept":
@@ -51,20 +52,25 @@ def admin_panel(request):
                     state=app.state
                 ).first()
                 if app.action == 'drop':
-                    prod.quantity -= app.quantity
+                    if app.quantity <= prod.quantity:
+                        prod.quantity -= app.quantity
                 elif app.action == 'request':
-                    storage = Product.objects.filter(owner="storage", name=app.name).first()
-                    if app.quantity <= storage.quantity:
-                        storage.quantity -= app.quantity
-                        prod.quantity += app.quantity
-                    else:
+                    buy = Purchase.objects.filter(
+                        name=app.name, 
+                        quantity=app.quantity, 
+                        requester=app.owner
+                    ).first()
+                    if not buy:
                         Purchase.objects.create(
-                            name=app.name, 
-                            quantity=app.quantity-storage.quantity
+                            name=app.name,
+                            quantity=app.quantity,
+                            requester=app.owner
                         )
-                        storage.quantity = 0
-                    storage.save()
-                prod.save()
+
+                if prod.quantity == 0:
+                    prod.delete()
+                else:
+                    prod.save()
                 app.delete()
 
     context = {

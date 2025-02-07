@@ -56,13 +56,11 @@ class Application(models.Model):
 
 
 class Purchase(models.Model):
-    # owner = storage
     STATES = [
         ('bought', 'Куплено'),
         ('delivered', 'Доставлено')
     ]
-    # Если доставлено, то надо добавить quantity вещей storage'у
-
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
+    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')  # Автор заявки
     state = models.CharField(max_length=20, choices=STATES, default='bought')
