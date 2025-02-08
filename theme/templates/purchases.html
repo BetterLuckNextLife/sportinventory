@@ -1,2 +1,60 @@
 {% extends "base.html" %}
 {% block title %}Закупки{% endblock %}
+{% block content %}
+<!-- Карточка требуемых закупок -->
+<div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Требуется закупить</h2>
+    <hr>
+    <table class="w-full border border-gray-300 border-collapse">
+        <tbody>
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p>1 • ыва</p>
+                </td>
+                <td class="p-2">
+                    <form method="post" class="gap-2 flex justify-end">
+                        {% csrf_token %}
+                        <button
+                            name="verification"
+                            title="Отклонить"
+                            value="reject"
+                            class="w-6 h-6 bg-red-500 hover:bg-red-700 text-white rounded shadow-md transition">
+                            ✕
+                        </button>
+                        <button
+                            name="verification"
+                            title="Одобрить"
+                            value="accept"
+                            class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
+                            ✓
+                        </button>
+                        <input
+                        class="hidden"
+                        name='ident'
+                        value="{{ application.ident }}"
+                        >
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Куплено</h2>
+    <hr>
+    <table class="w-full border border-gray-300 border-collapse">
+        <tbody>
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p>1 • ыва</p>
+                </td>
+            </tr>
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p>8 • фыва</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

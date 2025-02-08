@@ -18,6 +18,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('not_verified/', views.not_verified, name='not_verified'),
     path('profile/', views.profile, name="profile"),
+    path('purchases/', views.purchases, name="purchases"),
     path('register/', views.register, name="register"),
     path('reports/', views.usage_report_view, name="reports"),
     path('storage/', views.storage, name="storage")

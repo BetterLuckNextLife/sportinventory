@@ -192,6 +192,17 @@ def profile(request):
     return render(request, 'profile.html', {})
 
 
+@login_required
+@verified_check
+@user_passes_test(is_admin)
+def purchases(request):
+    context = {
+        'purchases': Purchase
+    }
+
+    return render(request, 'purchases.html', context)
+
+
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
