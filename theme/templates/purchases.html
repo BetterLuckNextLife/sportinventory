@@ -11,12 +11,39 @@
             {% if purchase.state == "waiting" %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <td class="p-2">
-                    <p>{{ purchase.quantity }} • {{ purchase.name }}</p>
+                    <p>
+                        <span class="text-primary-700">{{ purchase.quantity }}</span>
+                        •
+                        {{ purchase.name }}
+                    </p>
                 </td>
                 <td class="p-2">
-                    
                     <form method="post" class="gap-2 flex justify-end">
                         {% csrf_token %}
+                        <input
+                            name="price"
+                            type="number"
+                            placeholder="Цена (₽)"
+                            class="w-24 px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                            min="0"
+                            max="9999999.99"
+                            step="0.01"
+                            required
+                        >
+                        <input
+                            name="distributor"
+                            list="distributorsList"
+                            type="text"
+                            placeholder="Поставщик"
+                            class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                            maxlength="256"
+                            required
+                        >
+                        <input
+                            class="hidden"
+                            name='ident'
+                            value="{{ purchase.ident }}"
+                        >
                         <button
                             name="verification"
                             title="Отклонить"
@@ -31,25 +58,7 @@
                             class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
                             ✓
                         </button>
-                        <input
-                        class=""
-                        name='price'
-                        placeholder="Цена"
-                        required
-                        <select class="px-1 bg-gray-50 text-sm border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="distributor">
-                        {% for distributor in distributors %}
-                            <option value="{{ distributor }}">
-                                {{ distributor }}
-                            </option>
-                        {% endfor %}
-                        </select>
-                        <input
-                        class="hidden"
-                        name='ident'
-                        value="{{ purchase.ident }}"
-                        >
                     </form>
-                    
                 </td>
             </tr>
             {% endif %}
@@ -66,7 +75,15 @@
             {% if purchase.state == "bought" %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <td class="p-2">
-                    <p>{{ purchase.quantity }} • {{ purchase.name }}</p>
+                    <p>
+                        <span class="text-primary-700">{{ purchase.quantity }}</span>
+                        •
+                        <span class="text-primary-700">{{ purchase.price }} ₽</span>
+                        •
+                        {{ purchase.name }}
+                        —
+                        {{ purchase.distributor }}
+                    </p>
                 </td>
             </tr>
             {% endif %}
@@ -74,4 +91,13 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+{% block datalists %}
+<datalist id="distributorsList">
+    {% for distributor in distributors %}
+    <option value="{{ distributor }}">
+        {{ distributor }}
+    </option>
+    {% endfor %}
+</datalist>
 {% endblock %}
