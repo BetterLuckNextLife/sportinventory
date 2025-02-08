@@ -32,6 +32,18 @@
                             ✓
                         </button>
                         <input
+                        class=""
+                        name='price'
+                        placeholder="Цена"
+                        required
+                        <select class="px-1 bg-gray-50 text-sm border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="distributor">
+                        {% for distributor in distributors %}
+                            <option value="{{ distributor }}">
+                                {{ distributor }}
+                            </option>
+                        {% endfor %}
+                        </select>
+                        <input
                         class="hidden"
                         name='ident'
                         value="{{ purchase.ident }}"

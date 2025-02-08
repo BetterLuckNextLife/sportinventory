@@ -61,12 +61,20 @@ class Application(models.Model):
 
 
 class Purchase(models.Model):
+    ident = models.AutoField(primary_key=True)
     STATES = [
         ('bought', 'Куплено'),
         ('delivered', 'Доставлено'),
         ('waiting', 'Ожидается')
     ]
+    DISTRIBUTORS = [
+        ('RosSportNadzor', 'РосСпротНадзор'),
+        ('SportCenter', 'СпортЦентр'),
+        ('Sportbeg', 'СпортБег'),
+    ]
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purchases')  # Автор заявки
     state = models.CharField(max_length=20, choices=STATES, default='waiting')
+    distributor = models.CharField(max_length=20, choices=DISTRIBUTORS)
+    price = models.PositiveIntegerField(default=100)

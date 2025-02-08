@@ -196,8 +196,10 @@ def profile(request):
 @verified_check
 @user_passes_test(is_admin)
 def purchases(request):
+    DISTRIBUTORS = ["РосСпротНадзор", "СпортЦентр", "СпортБег"]
     context = {
-        'purchases': Purchase.objects.filter()
+        'purchases': Purchase.objects.filter(),
+        'distributors' : DISTRIBUTORS
     }
 
     return render(request, 'purchases.html', context)
