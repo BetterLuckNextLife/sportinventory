@@ -68,5 +68,5 @@ class Purchase(models.Model):
     ]
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
-    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purcahses')  # Автор заявки
+    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purchases')  # Автор заявки
     state = models.CharField(max_length=20, choices=STATES, default='waiting')

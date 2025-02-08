@@ -7,11 +7,14 @@
     <hr>
     <table class="w-full border border-gray-300 border-collapse">
         <tbody>
+            {% for purchase in purchases %}
+            {% if purchase.state == "waiting" %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <td class="p-2">
-                    <p>1 • ыва</p>
+                    <p>{{ purchase.quantity }} • {{ purchase.name }}</p>
                 </td>
                 <td class="p-2">
+                    
                     <form method="post" class="gap-2 flex justify-end">
                         {% csrf_token %}
                         <button
@@ -31,11 +34,14 @@
                         <input
                         class="hidden"
                         name='ident'
-                        value="{{ application.ident }}"
+                        value="{{ purchase.ident }}"
                         >
                     </form>
+                    
                 </td>
             </tr>
+            {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -44,16 +50,15 @@
     <hr>
     <table class="w-full border border-gray-300 border-collapse">
         <tbody>
+            {% for purchase in purchases %}
+            {% if purchase.state == "bought" %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <td class="p-2">
-                    <p>1 • ыва</p>
+                    <p>{{ purchase.quantity }} • {{ purchase.name }}</p>
                 </td>
             </tr>
-            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
-                <td class="p-2">
-                    <p>8 • фыва</p>
-                </td>
-            </tr>
+            {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 </div>

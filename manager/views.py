@@ -197,7 +197,7 @@ def profile(request):
 @user_passes_test(is_admin)
 def purchases(request):
     context = {
-        'purchases': Purchase
+        'purchases': Purchase.objects.filter()
     }
 
     return render(request, 'purchases.html', context)
