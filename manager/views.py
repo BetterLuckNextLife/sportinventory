@@ -37,8 +37,8 @@ def admin_panel(request):
             verifinguser = User.objects.filter(username=username).first()
             verifinguser.verified = True
             verifinguser.save()
-        elif "verification" in request.POST:
-            action = request.POST.get("verification")
+        elif "approve" in request.POST:
+            action = request.POST.get("approve")
             identificator = int(request.POST.get("ident"))
 
             app = Application.objects.filter(ident=identificator).first() # Объект заявки
