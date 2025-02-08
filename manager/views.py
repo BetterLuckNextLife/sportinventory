@@ -37,41 +37,76 @@ def admin_panel(request):
             verifinguser = User.objects.filter(username=username).first()
             verifinguser.verified = True
             verifinguser.save()
-        elif "status" in request.POST:
-            action = request.POST.get("status")
+        elif "verification" in request.POST:
+            action = request.POST.get("verification")
             identificator = int(request.POST.get("ident"))
 
-            app = Application.objects.filter(ident=identificator).first()
+            app = Application.objects.filter(ident=identificator).first() # Объект заявки
 
-            if action == "reject":
+            if action == "reject": # Удалить если отклняем
                 app.delete()
-            elif action == "accept":
+            elif action == "accept": # Если принять, то покупаем нужные вещи или выдаём уже имеющиеся
                 prod = Product.objects.filter(
                     name=app.name,
                     owner=app.owner,
                     state=app.state
                 ).first()
-                if app.action == 'drop':
-                    if app.quantity <= prod.quantity:
-                        prod.quantity -= app.quantity
-                elif app.action == 'request':
+                print(app.name, app.state, app.owner)
+                if prod:
+                    if app.action == 'drop' and prod.state != "broken":
+                        prod = Product.objects.create(
+                        name=app.name,
+                        owner=None,
+                        state='inactive'
+                        )
+                        prod.save()
+                    elif app.action == 'drop' and prod.state == "broken":
+                        if app.quantity <= prod.quantity:
+                            prod.quantity -= app.quantity
+                    elif app.action == 'request':
+
+                        storageprod = Product.objects.filter(
+                                name=app.name,
+                                owner=None,
+                            ).first()
+                        if storageprod:
+                            storageprod.quantity -= app.quantity
+                            prod.quantity += app.quantity
+                        buy = Purchase.objects.filter(
+                            name=app.name, 
+                            quantity=app.quantity, 
+                            requester=app.owner
+                        ).first()
+                        if not buy:
+                            Purchase.objects.create(
+                                name=app.name,
+                                quantity=app.quantity,
+                                requester=app.owner
+                        )
+                        buy.save()
+
+                    if prod.quantity == 0:
+                        print(f"{prod} reached 0, deleting")
+                        prod.delete()
+                    else:
+                        prod.save()
+                    app.delete()
+                else:
+                    print(f"None were found, creating buy")
                     buy = Purchase.objects.filter(
-                        name=app.name, 
-                        quantity=app.quantity, 
-                        requester=app.owner
-                    ).first()
+                            name=app.name, 
+                            quantity=app.quantity, 
+                            requester=app.owner
+                        ).first()
                     if not buy:
                         Purchase.objects.create(
                             name=app.name,
                             quantity=app.quantity,
                             requester=app.owner
-                        )
-
-                if prod.quantity == 0:
-                    prod.delete()
-                else:
-                    prod.save()
-                app.delete()
+                    )
+            print(f"{app} resolved, setting from {app.status} to seen")
+            app.status = "seen"
+            app.save()
 
     context = {
         "products": Product.objects.filter(),
@@ -108,7 +143,7 @@ def inventory(request):
         quantity = list(map(int, request.POST.getlist('quantity')))
         action = request.POST.getlist('action')
         state = request.POST.getlist('state')
-
+        print(f"User sent POST to inventory, got: {name, quantity, action, state}")
         try:
             for q in quantity:
                 if q <= 0:
@@ -194,7 +229,7 @@ def storage(request):
         changingproduct = Product.objects.filter(owner=user, name=productname).first()
         changingproduct.state = state
         changingproduct.save()
-        
+
     context = {
         'products': Product.objects.filter()
     }

@@ -8,39 +8,41 @@
     <table class="w-full border border-gray-300 border-collapse">
         <tbody>
             {% for application in applications %}
-            <tr id="{{ forloop.counter }}" class="p-2 border-t hover:bg-primary-50 transition">
-                <td class="p-2">
-                    <p class="break-all">{{ application.owner }}</p>
-                    <p class="text-black font-medium break-all">
-                        <span class="text-primary-700">{{ application.quantity }}</span> • {{ application.name }}
-                    </p>
-                </td>
-                <td>
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="gap-2 flex justify-end">
-                            <button
-                                name="status"
-                                value="reject"
-                                class="w-6 h-6 bg-red-500 hover:bg-red-700 text-white rounded shadow-md transition">
-                                ✕
-                            </button>
-                            <button
-                                name="status"
-                                value="accept"
-                                title="Одобрить заявку"
-                                class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
-                                ✓
-                            </button>
-                            <input
-                            class="hidden"
-                            name='ident'
-                            value="{{ application.ident }}"
-                            >
-                        </div>
-                    </form>
-                </td>
-            </tr>
+                {% if application.status == "unseen" %}
+                <tr id="{{ forloop.counter }}" class="p-2 border-t hover:bg-primary-50 transition">
+                    <td class="p-2">
+                        <p class="break-all">{{ application.owner }}</p>
+                        <p class="text-black font-medium break-all">
+                            <span class="text-primary-700">{{ application.quantity }}</span> • {{ application.name }} - {{ application.state }} - {{ application.action }}
+                        </p>
+                    </td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="gap-2 flex justify-end">
+                                <button
+                                    name="verification"
+                                    value="reject"
+                                    class="w-6 h-6 bg-red-500 hover:bg-red-700 text-white rounded shadow-md transition">
+                                    ✕
+                                </button>
+                                <button
+                                    name="verification"
+                                    value="accept"
+                                    title="Одобрить заявку"
+                                    class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
+                                    ✓
+                                </button>
+                                <input
+                                class="hidden"
+                                name='ident'
+                                value="{{ application.ident }}"
+                                >
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

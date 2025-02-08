@@ -26,7 +26,7 @@ class Product(models.Model):
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     state = models.CharField(max_length=8, choices=STATE_CHOICES, default='inactive')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} x{self.quantity} ({self.get_state_display()})"
@@ -44,11 +44,16 @@ class Application(models.Model):
         ('inactive', 'В запасе'),
         ('broken', 'Сломан'),
     ]
+    STATUS =[
+        ('seen', 'Рассмотрено'),
+        ('unseen', 'Не рассмотрено')
+    ]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')  # Автор заявки
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
     state = models.CharField(max_length=8, choices=STATE_CHOICES, default='inactive')
+    status = models.CharField(max_length=8, choices=STATUS, default='unseen')
     '''if action == "request":
             ...
     На запрос выделяем quantity вещей. Если у storage нет такого количества, то закупаем через Purchase'''
@@ -58,9 +63,10 @@ class Application(models.Model):
 class Purchase(models.Model):
     STATES = [
         ('bought', 'Куплено'),
-        ('delivered', 'Доставлено')
+        ('delivered', 'Доставлено'),
+        ('waiting', 'Ожидается')
     ]
     name = models.CharField(max_length=256)
     quantity = models.PositiveIntegerField(default=1)
-    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')  # Автор заявки
-    state = models.CharField(max_length=20, choices=STATES, default='bought')
+    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purcahses')  # Автор заявки
+    state = models.CharField(max_length=20, choices=STATES, default='waiting')
