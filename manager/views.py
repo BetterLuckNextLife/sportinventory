@@ -165,7 +165,7 @@ def inventory(request):
         name = request.POST.getlist('name')
         quantity = list(map(int, request.POST.getlist('quantity')))
         action = request.POST.getlist('action')
-        state = request.POST.getlist('state')
+        state = 'В запасе'
         print(f"User sent POST to inventory, got: {name, quantity, action, state}")
         try:
             for q in quantity:
@@ -241,9 +241,10 @@ def handle_purchase_action(action, distributor, price, id):
         return
     elif action == "accept":
         prod, created = Product.objects.get_or_create(
-            name=purchase.name, owner=None, state=purchase.state, quantity=purchase.quantity,
+        name=purchase.name, owner=purchase.requester, state="inactive",
+        defaults={"quantity": 0}  
         )
-        prod.quantity += purchase.quantity
+        prod.quantity += purchase.quantity  # Увеличиваем только один раз, я на поиск этого бага потратил полтора часа
         prod.save()
         purchase.distributor = distributor
         purchase.price = price
