@@ -201,6 +201,11 @@ def inventory(request):
     products = Product.objects.filter(owner=request.user)
     return render(request, 'inventory.html', {'products': products})
 
+@login_required
+def applications(request):
+    applications = Application.objects.filter(owner=request.user)
+    print("serving application.html")
+    return render(request, 'applications.html', {'applications': applications})
 
 def login(request):
     return render(request, 'login.html', {})
@@ -269,7 +274,6 @@ def usage_report_view(request):
 
     # user_report и db_stats будут доступны в шаблоне как переменные
     return render(request, 'reports.html', context)
-
 
 @login_required
 @user_passes_test(is_admin)

@@ -21,7 +21,8 @@ urlpatterns = [
     path('purchases/', views.purchases, name="purchases"),
     path('register/', views.register, name="register"),
     path('reports/', views.usage_report_view, name="reports"),
-    path('storage/', views.storage, name="storage")
+    path('storage/', views.storage, name="storage"),
+    path('applications/', views.applications, name="applications")
 ]
 
 # Указываем кастомный обработчик 404
