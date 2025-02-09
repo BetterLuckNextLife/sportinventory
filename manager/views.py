@@ -205,7 +205,6 @@ def inventory(request):
 @verified_check
 def applications(request):
     applications = Application.objects.filter(owner=request.user)
-    print("serving application.html")
     return render(request, 'applications.html', {'applications': applications})
 
 def login(request):
