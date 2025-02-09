@@ -46,9 +46,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
-# NPM path for Windows
 
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Application definition
 

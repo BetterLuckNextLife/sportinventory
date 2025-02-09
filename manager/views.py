@@ -246,6 +246,8 @@ def handle_purchase_action(action, distributor, price, id):
         )
         prod.quantity += purchase.quantity
         prod.save()
+        purchase.distributor = distributor
+        purchase.price = price
         purchase.state = "bought"
         purchase.save()
         return
