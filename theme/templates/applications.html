@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Закупки{% endblock %}
+{% block content %}
+<!-- Карточка требуемых закупок -->
+<div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Ваши заявки</h2>
+    <hr>
+    <table class="w-full border border-gray-300 border-collapse">
+        <tbody>
+            {% for application in applications %}
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p class="text-black break-all">
+                        <span class="text-primary-700 font-medium">{{ application.quantity }}</span>
+                        •
+                        {{ application.name }}
+                        —
+                        {% if application.state == 'inactive' %}
+                        <span class="text-green-500">В запасе</span>
+                        {% elif application.state == 'active' %}
+                        <span class="text-blue-500">Используется</span>
+                        {% elif application.state == 'broken' %}
+                        <span class="text-red-500">Сломано</span>
+                        {% endif %}
+                    </p>
+                    <p>
+                        {% if application.status == 'seen' %}
+                        <span class="text-green-500">Рассмотрено ✓</span>
+                        {% elif application.status == 'unseen' %}
+                        <span class="text-red-500">Нерассмотрено ✕</span>
+                        {% endif %}
+                    </p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
