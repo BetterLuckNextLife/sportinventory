@@ -64,7 +64,7 @@ class Purchase(models.Model):
     ident = models.AutoField(primary_key=True)
     STATES = [
         ('bought', 'Куплено'),
-        ('delivered', 'Доставлено'),
+        #('delivered', 'Доставлено'), Стало не нужно в ходе 
         ('waiting', 'Ожидается')
     ]
     DISTRIBUTORS = [

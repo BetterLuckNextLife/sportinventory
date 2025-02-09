@@ -65,7 +65,7 @@ def handle_admin_action(action, name, quantity, username, state):
     if action == "delete":
         prod = Product.objects.filter(name=name, owner=owner, state=state).first()
         if prod:
-            prod.quantity = max(0, prod.quantity - quantity)  # Убедимся, что quantity ≥ 0
+            prod.quantity = max(0, prod.quantity - quantity)  # Молимся, что quantity >= 0
             if prod.quantity == 0:
                 prod.delete()
             else:
@@ -219,6 +219,8 @@ def profile(request):
 @verified_check
 @user_passes_test(is_admin)
 def purchases(request):
+    if request.method == "POST":
+        handle_purchase_action(request.POST.get("verification"), request.POST.get("distributor"), request.POST.get("price"), request.POST.get("ident"))
     DISTRIBUTORS = ["РосСпротНадзор", "СпортЦентр", "СпортБег"]
     context = {
         'purchases': Purchase.objects.filter(),
@@ -227,6 +229,20 @@ def purchases(request):
 
     return render(request, 'purchases.html', context)
 
+def handle_purchase_action(action, distributor, price, id):
+    purchase = Purchase.objects.filter(ident=id).first()
+    if action == "reject":
+        purchase.delete()
+        return
+    elif action == "accept":
+        prod, created = Product.objects.get_or_create(
+            name=purchase.name, owner=None, state=purchase.state, quantity=purchase.quantity,
+        )
+        prod.quantity += purchase.quantity
+        prod.save()
+        purchase.state = "bought"
+        purchase.save()
+        return
 
 def register(request):
     if request.method == 'POST':
