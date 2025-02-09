@@ -28,95 +28,118 @@ def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
 
 
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import transaction
+from .models import User, Application, Product, Purchase
+
 @login_required
 @user_passes_test(is_admin)
 def admin_panel(request):
     if request.method == "POST":
-        if "username" in request.POST:
-            username = request.POST.get('username')
-            verifinguser = User.objects.filter(username=username).first()
-            verifinguser.verified = True
-            verifinguser.save()
-        elif "approve" in request.POST:
-            action = request.POST.get("approve")
-            identificator = int(request.POST.get("ident"))
-
-            app = Application.objects.filter(ident=identificator).first() # Объект заявки
-
-            if action == "reject": # Удалить если отклняем
-                app.delete()
-            elif action == "accept": # Если принять, то покупаем нужные вещи или выдаём уже имеющиеся
-                prod = Product.objects.filter(
-                    name=app.name,
-                    owner=app.owner,
-                    state=app.state
-                ).first()
-                print(app.name, app.state, app.owner)
-                if prod:
-                    if app.action == 'drop' and prod.state != "broken":
-                        prod = Product.objects.create(
-                        name=app.name,
-                        owner=None,
-                        state='inactive'
-                        )
-                        prod.save()
-                    elif app.action == 'drop' and prod.state == "broken":
-                        if app.quantity <= prod.quantity:
-                            prod.quantity -= app.quantity
-                    elif app.action == 'request':
-
-                        storageprod = Product.objects.filter(
-                                name=app.name,
-                                owner=None,
-                            ).first()
-                        if storageprod:
-                            storageprod.quantity -= app.quantity
-                            prod.quantity += app.quantity
-                        buy = Purchase.objects.filter(
-                            name=app.name, 
-                            quantity=app.quantity, 
-                            requester=app.owner
-                        ).first()
-                        if not buy:
-                            Purchase.objects.create(
-                                name=app.name,
-                                quantity=app.quantity,
-                                requester=app.owner
-                        )
-                        buy.save()
-
-                    if prod.quantity == 0:
-                        print(f"{prod} reached 0, deleting")
-                        prod.delete()
-                    else:
-                        prod.save()
-                    app.delete()
-                else:
-                    print(f"None were found, creating buy")
-                    buy = Purchase.objects.filter(
-                            name=app.name, 
-                            quantity=app.quantity, 
-                            requester=app.owner
-                        ).first()
-                    if not buy:
-                        Purchase.objects.create(
-                            name=app.name,
-                            quantity=app.quantity,
-                            requester=app.owner
-                    )
-            print(f"{app} resolved, setting from {app.status} to seen")
-            app.status = "seen"
-            app.save()
+        handle_post_request(request)
 
     context = {
-        "products": Product.objects.filter(),
-        "users": User.objects.filter(),
-        "applications": Application.objects.filter()
+        "products": Product.objects.all(),
+        "users": User.objects.all(),
+        "applications": Application.objects.all(),
     }
-    
     return render(request, 'admin_panel.html', context)
-    
 
+
+
+def handle_post_request(request):
+    """Обрабатывает POST-запросы админки."""
+    if "verification" in request.POST:
+        verify_user(request.POST.get("username"))
+    elif "approve" in request.POST:
+        process_application(
+            int(request.POST.get("ident")), request.POST.get("approve")
+        )
+    elif "action" in request.POST:
+        handle_admin_action(request.POST.get("action"), request.POST.get("name"), request.POST.get("quantity"), request.POST.get("username"),  request.POST.get("state"))
+
+def handle_admin_action(action, name, quantity, username, state):
+    owner = User.objects.filter(username=username).first()
+    quantity = int(quantity)
+    if action == "delete":
+        prod = Product.objects.filter(name=name, owner=owner, state=state).first()
+        if prod:
+            prod.quantity = max(0, prod.quantity - quantity)  # Убедимся, что quantity ≥ 0
+            if prod.quantity == 0:
+                prod.delete()
+            else:
+                prod.save()
+    
+    elif action == "add":
+        prod, created = Product.objects.get_or_create(
+            name=name, owner=owner, state=state,
+            defaults={"quantity": 0}  
+        )
+        prod.quantity += quantity
+        prod.save()
+    
+        
+
+def verify_user(username):
+    """Подтверждает пользователя."""
+    user = User.objects.filter(username=username).first()
+    if user:
+        user.verified = True
+        user.save()
+
+def process_application(identificator, action):
+    """Обрабатывает заявку (accept/reject)."""
+    app = Application.objects.filter(ident=identificator).first()
+    if not app:
+        return
+
+    if action == "reject":
+        app.delete()
+        return
+
+    handle_application_acceptance(app)
+
+def handle_application_acceptance(app):
+    """Обрабатывает принятие заявки."""
+    with transaction.atomic():
+        prod = Product.objects.filter(name=app.name, owner=app.owner, state=app.state).first()
+
+        if not prod:
+            create_purchase_request(app)
+        else:
+            modify_existing_product(prod, app)
+
+        app.status = "seen"
+        app.save()
+
+def create_purchase_request(app):
+    """Создаёт запись о покупке, если товара нет в наличии."""
+    purchase, created = Purchase.objects.get_or_create(name=app.name, quantity=app.quantity, requester=app.owner)
+    if not created:
+        purchase.quantity += app.quantity
+        purchase.save()
+
+def modify_existing_product(prod, app):
+    """Обновляет данные о продукте или создаёт новый, если требуется."""
+    if app.action == "drop":
+        if prod.state != "broken":
+            Product.objects.create(name=app.name, owner=None, state="broken")
+        elif prod.quantity >= app.quantity:
+            prod.quantity -= app.quantity
+            Product.objects.create(name=app.name, owner=None, quantity=app.quantity, state="inactive")
+    elif app.action == "request":
+        storage_prod = Product.objects.filter(name=app.name, owner=None).first()
+        if storage_prod:
+            storage_prod.quantity -= app.quantity
+            prod.quantity += app.quantity
+        else:
+            create_purchase_request(app)
+
+    if prod.quantity == 0:
+        prod.delete()
+    else:
+        prod.save()
 
 @login_required
 @verified_check

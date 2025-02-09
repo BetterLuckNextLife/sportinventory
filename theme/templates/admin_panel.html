@@ -72,8 +72,8 @@
 <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
     <h2 class="text-xl font-semibold text-center text-primary-600">Выдать инвентарь</h2>
     <hr>
-    {% csrf_token %}
     <form method="post" class="gap-4 grid">
+        {% csrf_token %}
         <input
             name="username"
             list="usersList"
@@ -102,6 +102,28 @@
                     step="1"
                     required
                 >
+                <select
+                    name="action"
+                    class="px-1 bg-gray-50 text-sm border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                >
+                    <option value="add">
+                        Добавить
+                    </option>
+                    <option value="delete">
+                        Убрать
+                    </option>
+                </select>
+                <select class="px-1 bg-gray-50 text-sm border border-gray-300 rounded focus:outline focus:outline-primary-500 transition" name="state">
+                    <option value="active">
+                        Используется
+                    </option> 
+                    <option value="inactive">
+                        В запасе
+                    </option> 
+                    <option value="broken">
+                        Сломано
+                    </option> 
+                </select>
                 <button
                     type="button"
                     class="bg-red-50 hover:bg-red-100 text-center text-sm text-red-500 border border-red-300 rounded cursor-pointer transition"
