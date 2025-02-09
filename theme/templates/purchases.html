@@ -1,2 +1,103 @@
 {% extends "base.html" %}
 {% block title %}Закупки{% endblock %}
+{% block content %}
+<!-- Карточка требуемых закупок -->
+<div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Требуется закупить</h2>
+    <hr>
+    <table class="w-full border border-gray-300 border-collapse">
+        <tbody>
+            {% for purchase in purchases %}
+            {% if purchase.state == "waiting" %}
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p>
+                        <span class="text-primary-700">{{ purchase.quantity }}</span>
+                        •
+                        {{ purchase.name }}
+                    </p>
+                </td>
+                <td class="p-2">
+                    <form method="post" class="gap-2 flex justify-end">
+                        {% csrf_token %}
+                        <input
+                            name="price"
+                            type="number"
+                            placeholder="Цена (₽)"
+                            class="w-24 px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                            min="0"
+                            max="9999999.99"
+                            step="0.01"
+                            required
+                        >
+                        <input
+                            name="distributor"
+                            list="distributorsList"
+                            type="text"
+                            placeholder="Поставщик"
+                            class="px-1 bg-white text-gray-800 text-sm placeholder-gray-400 border border-gray-300 rounded focus:outline focus:outline-primary-500 transition"
+                            maxlength="256"
+                            required
+                        >
+                        <input
+                            class="hidden"
+                            name='ident'
+                            value="{{ purchase.ident }}"
+                        >
+                        <button
+                            name="verification"
+                            title="Отклонить"
+                            value="reject"
+                            class="w-6 h-6 bg-red-500 hover:bg-red-700 text-white rounded shadow-md transition">
+                            ✕
+                        </button>
+                        <button
+                            name="verification"
+                            title="Одобрить"
+                            value="accept"
+                            class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
+                            ✓
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="w-1/2 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Куплено</h2>
+    <hr>
+    <table class="w-full border border-gray-300 border-collapse">
+        <tbody>
+            {% for purchase in purchases %}
+            {% if purchase.state == "bought" %}
+            <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
+                <td class="p-2">
+                    <p>
+                        <span class="text-primary-700">{{ purchase.quantity }}</span>
+                        •
+                        <span class="text-primary-700">{{ purchase.price }} ₽</span>
+                        •
+                        {{ purchase.name }}
+                        —
+                        {{ purchase.distributor }}
+                    </p>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block datalists %}
+<datalist id="distributorsList">
+    {% for distributor in distributors %}
+    <option value="{{ distributor }}">
+        {{ distributor }}
+    </option>
+    {% endfor %}
+</datalist>
+{% endblock %}
