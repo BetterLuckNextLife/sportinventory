@@ -202,6 +202,7 @@ def inventory(request):
     return render(request, 'inventory.html', {'products': products})
 
 @login_required
+@verified_check
 def applications(request):
     applications = Application.objects.filter(owner=request.user)
     print("serving application.html")
