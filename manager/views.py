@@ -309,7 +309,11 @@ def register(request):
 @user_passes_test(is_admin)
 def reports(request):
     if request.method == "POST":
-        user = User.objects.filter(id=request.POST.get("username")).first()
+        if request.POST.get("username") == '':
+            user = None
+        else:
+            username = request.POST.get("username")
+        user = User.objects.filter(username=username).first()
         productname = request.POST.get("productname")
         state = request.POST.get("state")
         changingproduct = Product.objects.filter(owner=user, name=productname).first()
