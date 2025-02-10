@@ -103,22 +103,48 @@ def process_application(identificator, action):
 def handle_application_acceptance(app):
     """Обрабатывает принятие заявки."""
     with transaction.atomic():
-        prod = Product.objects.filter(name=app.name, owner=app.owner, state=app.state).first()
+        storage_prod = Product.objects.filter(name=app.name, owner=None, state="inactive").first()
 
-        if not prod:
-            create_purchase_request(app)
+        if not storage_prod:
+            print(f"[Ошибка] Нет предметов '{app.name}' на складе")
+            return  # Если товара нет, дальше не идём
+
+        if storage_prod.quantity >= app.quantity:
+            # Если хватает, выдаём пользователю
+            storage_prod.quantity -= app.quantity
+            user_prod, _ = Product.objects.get_or_create(
+            name=app.name, owner=app.owner, state="inactive", defaults={"quantity": 0}
+            )
+            user_prod.quantity += app.quantity
+            user_prod.save()
+
+            if storage_prod.quantity == 0:
+                storage_prod.delete()
+            else:
+                storage_prod.save()
+
+            print(f"[OK] Выдано {app.quantity} предметов '{app.name}' пользователю {app.owner}")
         else:
-            modify_existing_product(prod, app)
+            print(f"[Закупка] Недостаточно '{app.name}' на складе ({storage_prod.quantity} шт.), создаём заявку на закупку")
+            create_purchase_request(app)
 
         app.status = "seen"
         app.save()
 
-def create_purchase_request(app):
+
+
+def create_purchase_request(app, quantity_needed=None):
     """Создаёт запись о покупке, если товара нет в наличии."""
-    purchase, created = Purchase.objects.get_or_create(name=app.name, quantity=app.quantity, requester=app.owner)
-    if not created:
-        purchase.quantity += app.quantity
-        purchase.save()
+    if quantity_needed is None:
+        quantity_needed = app.quantity
+    
+    purchase, created = Purchase.objects.get_or_create(
+        name=app.name, requester=app.owner,
+        defaults={"quantity": 0}
+    )
+    purchase.quantity += quantity_needed
+    purchase.save()
+
 
 def modify_existing_product(prod, app):
     """Обновляет данные о продукте или создаёт новый, если требуется."""
@@ -128,13 +154,26 @@ def modify_existing_product(prod, app):
         elif prod.quantity >= app.quantity:
             prod.quantity -= app.quantity
             Product.objects.create(name=app.name, owner=None, quantity=app.quantity, state="inactive")
+    
     elif app.action == "request":
         storage_prod = Product.objects.filter(name=app.name, owner=None).first()
         if storage_prod:
-            storage_prod.quantity -= app.quantity
-            prod.quantity += app.quantity
+            if storage_prod.quantity >= app.quantity:
+                # Если на складе достаточно товара, выдаём его пользователю
+                storage_prod.quantity -= app.quantity
+                prod.quantity += app.quantity
+                storage_prod.save()
+                prod.save()
+            else:
+                # Если недостаточно, выдаём всё, что есть, а недостающее отправляем в закупки
+                remaining_needed = app.quantity - storage_prod.quantity
+                prod.quantity += storage_prod.quantity
+                storage_prod.quantity = 0
+                storage_prod.delete()
+                create_purchase_request(app, remaining_needed)  # Создаём запрос на недостающие предметы
+                prod.save()
         else:
-            create_purchase_request(app)
+            create_purchase_request(app, app.quantity)
 
     if prod.quantity == 0:
         prod.delete()
@@ -165,7 +204,7 @@ def inventory(request):
         name = request.POST.getlist('name')
         quantity = list(map(int, request.POST.getlist('quantity')))
         action = request.POST.getlist('action')
-        state = 'В запасе'
+        state = 'inactive'
         print(f"User sent POST to inventory, got: {name, quantity, action, state}")
         try:
             for q in quantity:
@@ -177,24 +216,18 @@ def inventory(request):
         # Заявка отправляется в бд. В панели админа отображаются все заявки и одобряются или отклоняются
         for i in range(len(name)):
             existing_app = Application.objects.filter(
-                name=name[i], 
-                quantity=quantity[i], 
-                action=action[i], 
-                state=state[i],
-                owner=request.user
+            name=name[i], 
+            quantity=quantity[i], 
+            action=action[i], 
+            owner=request.user
             ).first()
-            if not existing_app:
-                Application.objects.create(
-                    name=name[i], 
-                    quantity=quantity[i], 
-                    action=action[i], 
-                    state=state[i],
-                    owner=request.user
-                )
-                messages.success(request, "Ваша заявка будет рассмотрена.")
-            else:
-                ...
 
+            Application.objects.create(
+            name=name[i], 
+            quantity=quantity[i], 
+            action=action[i], 
+            owner=request.user
+            )
         return redirect('inventory')
 
     # Получаем продукты пользователя
