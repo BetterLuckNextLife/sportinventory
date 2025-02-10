@@ -107,26 +107,25 @@ def handle_application_acceptance(app):
 
         if not storage_prod:
             print(f"[Ошибка] Нет предметов '{app.name}' на складе")
-            return  # Если товара нет, дальше не идём
-
-        if storage_prod.quantity >= app.quantity:
-            # Если хватает, выдаём пользователю
-            storage_prod.quantity -= app.quantity
-            user_prod, _ = Product.objects.get_or_create(
-            name=app.name, owner=app.owner, state="inactive", defaults={"quantity": 0}
-            )
-            user_prod.quantity += app.quantity
-            user_prod.save()
-
-            if storage_prod.quantity == 0:
-                storage_prod.delete()
-            else:
-                storage_prod.save()
-
-            print(f"[OK] Выдано {app.quantity} предметов '{app.name}' пользователю {app.owner}")
-        else:
-            print(f"[Закупка] Недостаточно '{app.name}' на складе ({storage_prod.quantity} шт.), создаём заявку на закупку")
+            print(f"[Закупка] Недостаточно '{app.name}', создаём заявку на закупку")
             create_purchase_request(app)
+
+        else:
+            if storage_prod.quantity >= app.quantity:
+                # Если хватает, выдаём пользователю
+                storage_prod.quantity -= app.quantity
+                user_prod, _ = Product.objects.get_or_create(
+                name=app.name, owner=app.owner, state="inactive", defaults={"quantity": 0}
+                )
+                user_prod.quantity += app.quantity
+                user_prod.save()
+
+                if storage_prod.quantity == 0:
+                    storage_prod.delete()
+                else:
+                    storage_prod.save()
+
+                print(f"[OK] Выдано {app.quantity} предметов '{app.name}' пользователю {app.owner}")
 
         app.status = "seen"
         app.save()
