@@ -3,7 +3,7 @@
 **Умная система учета спортивного инвентаря для школ.**  
 
 ССЫЛКА НА ДЕМОНСТРАЦИЮ:
-https://rutube.com (ВСТАВИТЬ ССЫЛКУ)
+https://rutube.ru/video/private/d6a903ea2342177ecaad9b304afb7d8d/?p=nduTOuLeONN1vr9aZqxBXg
 
 ---
 
