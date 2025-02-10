@@ -22,12 +22,6 @@
                     <td class="px-4 py-2 text-start">{{ user.username }}</td>
                 </tr>
                 <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
-                    <td class="px-4 py-2 text-start">Пароль</td>
-                    <td class="px-4 py-2 text-start">
-                        <a class="text-primary-500 hover:text-primary-700 transition" href="{% url 'change_password' %}">Сменить пароль</a>
-                    </td>
-                </tr>
-                <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                     <td class="px-4 py-2 text-start">Полномочия</td>
                     {% if user.is_staff %}
                     <td class="px-4 py-2 text-start text-blue-500">Админ</td>
@@ -38,9 +32,9 @@
                 <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                     <td class="px-4 py-2 text-start">Верификация</td>
                     {% if user.verified %}
-                    <td class="px-4 py-2 text-start text-green-500">Да</td>
+                    <td class="px-4 py-2 text-start text-green-500">Да ✓</td>
                     {% else %}
-                    <td class="px-4 py-2 text-start text-red-500">Нет</td>
+                    <td class="px-4 py-2 text-start text-red-500">Нет ✕</td>
                     {% endif %}
                 </tr>
             </tbody>

@@ -9,7 +9,9 @@ def usage_report():
         inactive_count=Count('products', filter=Q(products__state='inactive')),
         broken_count=Count('products', filter=Q(products__state='active'))
     )
+
     report = []
+
     for user in users:
         report.append({
             'username': user.username,

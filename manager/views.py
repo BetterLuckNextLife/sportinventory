@@ -198,8 +198,12 @@ def inventory(request):
         return redirect('inventory')
 
     # Получаем продукты пользователя
-    products = Product.objects.filter(owner=request.user)
-    return render(request, 'inventory.html', {'products': products})
+    context = {
+        'products': Product.objects.filter(owner=request.user),
+        'all_products': Product.objects.filter()
+    }
+
+    return render(request, 'inventory.html', context)
 
 @login_required
 @verified_check
@@ -269,6 +273,7 @@ def usage_report_view(request):
     # Получаем данные отчётов
     user_report = usage_report()
     db_stats = db_report()
+    
     context = {
         'user_report': user_report,
         'db_stats': db_stats,

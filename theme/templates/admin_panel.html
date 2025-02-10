@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Карточка заявок на инвентарь -->
 <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-    <h2 class="text-xl font-semibold text-center text-primary-600">Заявки на выдачу</h2>
+    <h2 class="text-xl font-semibold text-center text-primary-600">Инвентарные заявки</h2>
     <hr>
     <table class="w-full border border-gray-300 border-collapse">
         <tbody>
@@ -25,17 +25,6 @@
                             <span class="text-primary-700">{{ application.quantity }}</span>
                             •
                             {{ application.name }}
-                        </p>
-                        <p>
-                            (
-                            {% if application.state == 'inactive' %}
-                            <span class="text-green-500">В запасе</span>
-                            {% elif application.state == 'active' %}
-                            <span class="text-blue-500">Используется</span>
-                            {% elif application.state == 'broken' %}
-                            <span class="text-red-500">Сломано</span>
-                            {% endif %}
-                            )
                         </p>
                     </td>
                     <td class="p-2">
@@ -70,7 +59,7 @@
 </div>
 <!-- Карточка выдачи инвентаря -->
 <div class="w-1/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-    <h2 class="text-xl font-semibold text-center text-primary-600">Выдать инвентарь</h2>
+    <h2 class="text-xl font-semibold text-center text-primary-600">Выдать/забрать инвентарь</h2>
     <hr>
     <form method="post" class="gap-4 grid">
         {% csrf_token %}

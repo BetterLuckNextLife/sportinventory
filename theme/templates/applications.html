@@ -14,20 +14,12 @@
                         <span class="text-primary-700 font-medium">{{ application.quantity }}</span>
                         •
                         {{ application.name }}
-                        —
-                        {% if application.state == 'inactive' %}
-                        <span class="text-green-500">В запасе</span>
-                        {% elif application.state == 'active' %}
-                        <span class="text-blue-500">Используется</span>
-                        {% elif application.state == 'broken' %}
-                        <span class="text-red-500">Сломано</span>
-                        {% endif %}
                     </p>
                     <p>
                         {% if application.status == 'seen' %}
                         <span class="text-green-500">Рассмотрено ✓</span>
                         {% elif application.status == 'unseen' %}
-                        <span class="text-red-500">Нерассмотрено ✕</span>
+                        <span class="text-red-500">Не рассмотрено ✕</span>
                         {% endif %}
                     </p>
                 </td>

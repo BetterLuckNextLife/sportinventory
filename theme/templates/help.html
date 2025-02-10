@@ -3,42 +3,108 @@
 {% block content %}
 <div class="w-full grid">
     <h2 class="text-center text-3xl font-bold mb-6">Справочная информация</h2>
-    <div class="space-y-4">
-        <div class="w-full border shadow-md">
-            <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse1')">
+    <div class="grid border-x border-b shadow-md">
+        <div class="w-full border-t">
+            <button class="w-full p-3 bg-white hover:bg-primary-50 text-left font-medium hover:text-primary-600 transition" type="button" onclick="toggleCollapse('collapse1')">
                 Как зарегистрироваться на сайте?
             </button>
             <div id="collapse1" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
-                Чтобы зарегистрироваться, перейдите на страницу
-                <a href="{% url 'register' %}" class="text-primary-500 hover:text-primary-800 transition">регистрации</a>
-                и заполните форму с вашими данными.
+                <ol class="pl-5 list-decimal">
+                    <li>
+                        Сообщите администрации о создании новой учётной записи.
+                    </li>
+                    <li>
+                        Перейдите на страницу
+                        <a href="{% url 'register' %}" class="text-primary-600 hover:text-primary-800 transition">регистрации</a>.
+                    </li>
+                    <li>
+                        Заполните форму с вашими данными.
+                    </li>
+                    <li>
+                        Ожидайте подтверждения регистрации.
+                    </li>
+                </ol>
             </div>
         </div>
-        <div class="w-full border shadow-md">
-            <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse2')">
-                Как добавить предмет в инвентарь?
+        <div class="w-full border-t">
+            <button class="w-full p-3 bg-white hover:bg-primary-50 text-left font-medium hover:text-primary-600 transition" type="button" onclick="toggleCollapse('collapse2')">
+                Как запросить предмет в инвентарь?
             </button>
             <div id="collapse2" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
-                После авторизации перейдите на страницу управления инвентарём и заполните форму для добавления нового предмета.
+                <ol class="pl-5 list-decimal">
+                    <li>
+                        Войдите в систему.
+                    </li>
+                    <li>
+                        Перейдите на страницу
+                        <a href="{% url 'inventory' %}" class="text-primary-600 hover:text-primary-800 transition">инвентаря</a>.
+                    </li>
+                    <li>
+                        Выберите название нужного предмета и его количество и функцию "Запросить".
+                        Если предмет отсутствует в списке, напишите своё название.
+                        Если вам необходимо запросить несколько предметов сразу, нажмите кнопку "Добавить".
+                        Для удаления лишней позиции нажмите кнопку "Удалить".
+                    </li>
+                    <li>
+                        Отправьте заявку, нажав кнопку "Отправить".
+                    </li>
+                    <li>
+                        Ожидайте одобрения заявки администрацией.
+                    </li>
+                </ol>
             </div>
         </div>
-        <div class="w-full border shadow-md">
-            <button class="w-full p-3 text-left font-medium bg-white hover:bg-primary-50 transition" type="button" onclick="toggleCollapse('collapse3')">
-                Как редактировать или удалить предмет?
+        <div class="w-full border-t">
+            <button class="w-full p-3 bg-white hover:bg-primary-50 text-left font-medium hover:text-primary-600 transition" type="button" onclick="toggleCollapse('collapse3')">
+                Как убрать лишний предмет?
             </button>
             <div id="collapse3" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
-                Чтобы редактировать или удалить предмет, используйте соответствующие кнопки в таблице управления инвентарём.
+                <ol class="pl-5 list-decimal">
+                    <li>
+                        Войдите в систему.
+                    </li>
+                    <li>
+                        Перейдите на страницу
+                        <a href="{% url 'inventory' %}" class="text-primary-600 hover:text-primary-800 transition">инвентаря</a>.
+                    </li>
+                    <li>
+                        Выберите название нужного предмета и его количество и функцию "Убрать".
+                        Если вам необходимо убрать несколько предметов сразу, нажмите кнопку "Добавить".
+                        Для удаления лишней позиции нажмите кнопку "Удалить".
+                    </li>
+                    <li>
+                        Отправьте заявку, нажав кнопку "Отправить".
+                    </li>
+                    <li>
+                        Ожидайте одобрения заявки администрацией.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="w-full border-t">
+            <button class="w-full p-3 bg-white hover:bg-primary-50 text-left font-medium hover:text-primary-600 transition" type="button" onclick="toggleCollapse('collapse4')">
+                Как узнать статус заявки?
+            </button>
+            <div id="collapse4" class="hidden p-3 gap-2 flex bg-gray-50 border-t">
+                <ol class="pl-5 list-decimal">
+                    <li>
+                        Войдите в систему.
+                    </li>
+                    <li>
+                        Перейдите на страницу
+                        <a href="{% url 'applications' %}" class="text-primary-600 hover:text-primary-800 transition">заявок</a>.
+                        Теперь вы можете увидеть статусы своих заявок,
+                        а также вспомнить, какие предметы вы запрашивали.
+                    </li>
+                </ol>
             </div>
         </div>
     </div>
     <div class="mt-10">
         <h4 class="text-xl font-semibold  mb-2">Контакты для связи</h4>
-        <p class=" mb-4">Если у вас остались вопросы, свяжитесь с нами:</p>
-        <ul class="list-disc list-inside ">
-            <!--TODO поменять данные-->
-            <li>Email: <a href="mailto:support@example.com" class="text-blue-500 hover:underline hover:text-primary-500">support@example.com</a></li>
-            <li>Телефон: <a href="tel:+1234567890" class="text-blue-500 hover:underline hover:text-primary-500">+1 234 567 890</a></li>
-        </ul>
+        <p class=" mb-4">Если у вас остались вопросы, перейдите на наш
+            <a href="https://github.com/BetterLuckNextLife/sportinventory" class="text-primary-600 hover:text-primary-800">GitHub</a>.
+        </p>
     </div>
 </div>
 {% endblock %}
