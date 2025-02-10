@@ -20,8 +20,7 @@ urlpatterns = [
     path('profile/', views.profile, name="profile"),
     path('purchases/', views.purchases, name="purchases"),
     path('register/', views.register, name="register"),
-    path('reports/', views.usage_report_view, name="reports"),
-    path('storage/', views.storage, name="storage"),
+    path('reports/', views.reports, name="reports"),
     path('applications/', views.applications, name="applications")
 ]
 

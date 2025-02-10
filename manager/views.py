@@ -301,24 +301,9 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-@user_passes_test(is_admin)
-def usage_report_view(request):
-    # Получаем данные отчётов
-    user_report = usage_report()
-    db_stats = db_report()
-    
-    context = {
-        'user_report': user_report,
-        'db_stats': db_stats,
-        'users': User.objects.filter()
-    }
-
-    # user_report и db_stats будут доступны в шаблоне как переменные
-    return render(request, 'reports.html', context)
-
 @login_required
 @user_passes_test(is_admin)
-def storage(request):
+def reports(request):
     if request.method == "POST":
         user = User.objects.filter(id=request.POST.get("username")).first()
         productname = request.POST.get("productname")
@@ -331,4 +316,4 @@ def storage(request):
         'products': Product.objects.filter()
     }
 
-    return render(request, 'storage.html', context)
+    return render(request, 'reports.html', context)

@@ -2,29 +2,74 @@
 {% block title %}Отчёты{% endblock %}
 {% block content %}
 <!-- Секция с таблицей -->
-<div class="w-2/3 p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
-    <h2 class="text-xl font-semibold text-center text-primary-600">Использование</h2>
+<div class="w-full p-4 grid gap-4 bg-white border rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-center text-primary-600">Весь инвентарь</h2>
     <hr>
     <table class="border border-gray-300 border-collapse">
         <thead>
             <tr class="bg-gray-50 border border-gray-300">
                 <th class="p-2 text-center">#</th>
-                <th class="p-2 text-start">Логин</th>
-                <th class="p-2 text-start">Имя, фамилия</th>
+                <th class="p-2 text-start">Пользователь</th>
+                <th class="p-2 text-start">Предмет</th>
                 <th class="p-2 text-start">Количество</th>
+                <th class="p-2 text-start">Состояние</th>
+                <th class="p-2 text-center"></th>
             </tr>
         </thead>
         <tbody id="inventoryTableBody">
-            {% for report in user_report %}
+            {% for product in products %}
+            <form method="post">
+            {% csrf_token %}
             <tr class="border-b border-gray-300 hover:bg-primary-50 transition">
                 <th class="p-2 text-center">{{ forloop.counter }}</th>
-                <td class="p-2 text-start break-all">{{ report.username }}</td>
-                <td class="p-2 text-start">{{ report.first_name }} {{ report.last_name }}</td>
-                <td class="p-2">{{ report.count }}</td>
+                <td class="p-2 text-start break-all">{{ product.owner }}</td>
+                <td class="p-2 text-start break-all">{{ product.name }}</td>
+                <td class="p-2 text-start">{{ product.quantity|default:"1" }}</td>
+                <td class="p-2">
+                    {% if product.state == 'inactive' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option selected value="inactive">В запасе</option>
+                        <option value="active">Используется</option>
+                        <option value="broken">Сломано</option>
+                    </select>
+                    {% elif product.state == 'active' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option value="inactive">В запасе</option>
+                        <option selected value="active">Используется</option>
+                        <option value="broken">Сломано</option>
+                    </select>
+                    {% elif product.state == 'broken' %}
+                    <select name="state" class="px-1 bg-gray-50 border border-gray-300 focus:outline focus:outline-primary-500 transition" required>
+                        <option value="inactive">В запасе</option>
+                        <option value="active">Используется</option>
+                        <option selected value="broken">Сломано</option>
+                    </select>
+                    {% endif %}
+                </td>
+                <input
+                    type="hidden"
+                    name="productname"
+                    value="{{ product.name }}"
+                >
+                <input
+                    type="hidden"
+                    name="username"
+                    value="{{ product.owner.id }}"
+                >
+                <td class="p-2 flex justify-end">
+                    <button
+                        name="verification"
+                        title="Одобрить"
+                        value="accept"
+                        class="w-6 h-6 bg-green-500 hover:bg-green-700 text-white rounded shadow-md transition">
+                        ✓
+                    </button>
+                </td>
+                </form>
             </tr>
             {% empty %}
             <tr class="border-y border-gray-300">
-                <td colspan="4" class="py-2 text-center text-gray-400 transition">Инвентарь пока не используется.</td>
+                <td colspan="4" class="py-2 text-center text-gray-400 transition">У вас пока нет инвентаря.</td>
             </tr>
             {% endfor %}
         </tbody>
