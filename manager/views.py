@@ -57,29 +57,34 @@ def handle_post_request(request):
             int(request.POST.get("ident")), request.POST.get("approve")
         )
     elif "action" in request.POST:
-        handle_admin_action(request.POST.get("action"), request.POST.get("name"), request.POST.get("quantity"), request.POST.get("username"),  request.POST.get("state"))
+        handle_admin_action(request)
 
-def handle_admin_action(action, name, quantity, username, state):
-    owner = User.objects.filter(username=username).first()
-    quantity = int(quantity)
-    if action == "delete":
-        prod = Product.objects.filter(name=name, owner=owner, state=state).first()
-        if prod:
-            prod.quantity = max(0, prod.quantity - quantity)  # Молимся, что quantity >= 0
-            if prod.quantity == 0:
-                prod.delete()
-            else:
-                prod.save()
-    
-    elif action == "add":
-        prod, created = Product.objects.get_or_create(
-            name=name, owner=owner, state=state,
-            defaults={"quantity": 0}  
-        )
-        prod.quantity += quantity
-        prod.save()
-    
+def handle_admin_action(request):
+    actions = request.POST.getlist("action")
+    names = request.POST.getlist("name")
+    quantities = request.POST.getlist("quantity")
+    usernames = request.POST.getlist("username")
+    states = request.POST.getlist("state")
+    for i in range(len(usernames)):
+        owner = User.objects.filter(username=usernames[i]).first()
+        quantity = int(quantities[i])
+        if actions[i] == "delete":
+            prod = Product.objects.filter(name=names[i], owner=owner, state=states[i]).first()
+            if prod:
+                prod.quantity = max(0, prod.quantity - quantity)  # Молимся, что quantity >= 0
+                if prod.quantity == 0:
+                    prod.delete()
+                else:
+                    prod.save()
         
+        elif actions[i] == "add":
+            prod, created = Product.objects.get_or_create(
+                name=names[i], owner=owner, state=states[i],
+                defaults={"quantity": 0}  
+            )
+            prod.quantity += quantity
+            prod.save()
+
 
 def verify_user(username):
     """Подтверждает пользователя."""
